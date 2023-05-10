@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sign</title>
+</head>
+<body>
+<h1>회원가입</h1>
+<div>
+  <form action="/member/join" method="post">
+    <input type="id" placeholder="아이디" name="id" /> <br>
+    <input type="password" placeholder="비밀번호" name="password" /> <br>
+    <input type="email" placeholder="이메일" name="email" /> <br>
+    <input type="text" placeholder="이름" name="nickname" /> <br>
+    <input type="number" placeholder="년 (4자)" id="b1" onblur="one()" />
+    <input type="number" placeholder="월" id="b2" onblur="one()" />
+    <input type="number" placeholder="일" id="b3" onblur="one()" /> <br>
+    <input type="hidden" name="birth" id="day" />
+    <select name="gender">
+      <option selected>성별</option>
+      <option value="M">남자</option>
+      <option value="F">여자</option>
+    </select> <br>
+    <input type='text' placeholder="전화번호 입력" name="phonenumber" v/> <br>
+
+    <input type="submit" value="회원가입" /> <br>
+  </form>
+</div>
+</body>
+<script>
+  const one = () => {
+     let year = document.getElementById("b1").value;
+     let month = document.getElementById("b2").value;
+     let day = document.getElementById("b3").value;
+     let rangeY = 1900;
+     let rangeM = 12;
+     let rangeD = 0;
+
+     if(rangeY > year){ year = document.getElementById("b1").value = rangeY; }
+     if(rangeM < month){ month = document.getElementById("b2").value = rangeM; }
+     if((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12) ) { rangeD = 31; }
+     if((month == 4) || (month == 6) || (month == 9) || (month == 11)) { rangeD = 30; }
+     if(month == 2 && (year % 4 || year % 100)) { rangeD = 29; } else if(month == 2 && !(year % 4 || year % 100)) { rangeD = 28; }
+     if(day > rangeD) { day = document.getElementById("b3").value = rangeD; }
+
+     let birth = document.getElementById("day").value = "" + year + "-" + month + "-" + day + "".toString();
+     console.log(birth);
+  }
+</script>
+</html>
