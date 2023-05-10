@@ -19,7 +19,12 @@ public class UserController {
         System.out.println("userDTO = " + userDTO.toString() + ", nickname = " + nickname);
         User user = User.saveToEntity(userDTO, nickname);
         userService.signUp(user);
-        return "/member/login";
+        return "signIn";
+    }
+
+    @GetMapping("/member/join")
+    public String save() {
+        return "signUp";
     }
 
     @PostMapping("/member/login")
@@ -28,6 +33,11 @@ public class UserController {
         UserDTO userDTO = userService.signIn(params);
         System.out.println("return value = " + userDTO.toString());
         return userDTO;
+    }
+
+    @GetMapping("/member/login")
+    public String login(){
+        return "signIn";
     }
 
 }
