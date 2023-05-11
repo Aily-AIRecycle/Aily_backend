@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>signIn</title>
@@ -10,5 +10,6 @@
         비밀번호 : <input type="password" name="password" placeholder="비밀번호를 입력해주세요" /> <br>
         <input type="submit" value="로그인 하기" />
     </form>
+    <span th:text="${session.result}"></span> <br>
 </body>
 </html>

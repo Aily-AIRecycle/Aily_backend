@@ -20,14 +20,20 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserDTO signIn(UserDTO params) {
+    public String signIn(UserDTO params) {
         Optional<User> user = userRepository.findById(params.getId());
         if(user.isPresent()){
             UserDTO userDTO = UserDTO.toUserDTO(user.get());
-            userDTO.setPassword(params.getPassword());
-            return userDTO;
+            String dbPass = userDTO.getPassword();
+            String inputPass = params.getPassword();
+            System.out.println("db = " + dbPass);
+            System.out.println("input = " + inputPass);
+            if(dbPass.equals(inputPass)){
+                return "all_ok";
+            }
+            return "id_ok";
         } else {
-            return null;
+            return "id_fail";
         }
     }
 }
