@@ -4,8 +4,10 @@ import aily.server.DTO.UserDTO;
 import aily.server.entity.MyPage;
 import aily.server.entity.User;
 import aily.server.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,17 +29,18 @@ public class UserController {
         return "signUp";
     }
 
-    @PostMapping("/member/login")
-    public UserDTO login (@RequestBody final UserDTO params) {
-        System.out.println("dto's = " + params.toString());
-        UserDTO userDTO = userService.signIn(params);
-        System.out.println("return value = " + userDTO.toString());
-        return userDTO;
-    }
-
     @GetMapping("/member/login")
     public String login(){
         return "signIn";
     }
+
+    @PostMapping("/member/login")
+    public String loginRe (@ModelAttribute UserDTO params, HttpSession session) {
+        String loginResult = userService.signIn(params);
+        session.setAttribute("result", loginResult);
+        return "signIn";
+    }
+
+
 
 }
