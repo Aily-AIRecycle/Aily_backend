@@ -16,8 +16,7 @@ public class User {
     @Id
     @Column(name = "phone_number")
     private String phonenumber;
-    @Column(name = "id")
-    private String id;
+
     @Column(name = "password")
     private String password;
 
@@ -36,7 +35,6 @@ public class User {
     public static User saveToEntity(UserDTO userDTO, String nickname) {
         User user = new User();
         MyPage myPage = new MyPage();
-        user.setId(userDTO.getId());
         user.setPassword(userDTO.getPassword());
         user.setBirth(userDTO.getBirth());
         user.setGender(userDTO.getGender());

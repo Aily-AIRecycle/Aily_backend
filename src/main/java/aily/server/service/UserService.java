@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public String signIn(UserDTO params) {
-        Optional<User> user = userRepository.findById(params.getId());
+        Optional<User> user = userRepository.findByEmail(params.getEmail());
         if(user.isPresent()){
             UserDTO userDTO = UserDTO.toUserDTO(user.get());
             String dbPass = userDTO.getPassword();

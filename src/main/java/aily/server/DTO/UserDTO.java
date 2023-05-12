@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class UserDTO {
     private String phonenumber;
-    private String id;
     private String password;
     private String birth;
     private String gender;
@@ -19,7 +18,6 @@ public class UserDTO {
     public static UserDTO toUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setPhonenumber(user.getPhonenumber());
-        userDTO.setId(user.getId());
         userDTO.setPassword(user.getPassword());
         userDTO.setBirth(user.getBirth());
         userDTO.setGender(user.getGender());
