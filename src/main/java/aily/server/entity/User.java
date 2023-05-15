@@ -32,7 +32,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private MyPage myPage;
 
-    public static User saveToEntity(UserDTO userDTO, String nickname) {
+    public static User saveToEntity(UserDTO userDTO) {
         User user = new User();
         MyPage myPage = new MyPage();
         user.setPassword(userDTO.getPassword());
@@ -40,7 +40,7 @@ public class User {
         user.setGender(userDTO.getGender());
         user.setEmail(userDTO.getEmail());
         user.setPhonenumber(userDTO.getPhonenumber());
-        myPage.setNickname(nickname);
+        myPage.setNickname(userDTO.getNickname());
         user.setMyPage(myPage);
         myPage.setUser(user);
         System.out.println("메소드 실행됨");
