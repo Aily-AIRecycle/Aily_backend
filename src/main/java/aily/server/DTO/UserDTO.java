@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor
-public class UserDTO {
+public class UserDTO extends MyPageDTO {
     private String phonenumber;
     private String password;
     private String birth;
