@@ -49,5 +49,10 @@ public class UserController {
         return info;
     }
 
+    @PostMapping("/member/EmailCheck")
+    public String emailCheck (@RequestBody UserDTO userDTO) {
+        System.out.println("email = " + userDTO.getEmail());
+        return userService.checkEmail(userDTO.getEmail());
+    }
 
 }

@@ -48,4 +48,13 @@ public class UserService {
         }
 
     }
+
+    public String checkEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isPresent()){
+            return "no";
+        } else {
+            return "yes";
+        }
+    }
 }
