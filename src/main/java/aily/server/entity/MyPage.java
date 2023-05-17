@@ -1,10 +1,7 @@
 package aily.server.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -19,6 +16,15 @@ public class MyPage {
     private int point;
     @Column(name = "profile")
     private String profile;
+
+    @ColumnDefault("0")
+    private int PET;
+
+    @ColumnDefault("0")
+    private int GEN;
+
+    @ColumnDefault("0")
+    private int CAN;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phonenumber", referencedColumnName = "phone_number")

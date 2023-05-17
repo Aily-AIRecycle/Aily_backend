@@ -43,6 +43,11 @@ public class UserController {
         return loginResult;
     }
 
+    @GetMapping("/member/{phone}")
+    public String mypage (@PathVariable String phone) {
+        String info = userService.test(phone);
+        return info;
+    }
 
 
 }
