@@ -43,6 +43,16 @@ public class UserController {
         return loginResult;
     }
 
+    @GetMapping("/member/{phone}")
+    public String mypage (@PathVariable String phone) {
+        String info = userService.test(phone);
+        return info;
+    }
 
+    @PostMapping("/member/EmailCheck")
+    public String emailCheck (@RequestBody UserDTO userDTO) {
+        System.out.println("email = " + userDTO.getEmail());
+        return userService.checkEmail(userDTO.getEmail());
+    }
 
 }

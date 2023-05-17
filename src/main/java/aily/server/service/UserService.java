@@ -1,5 +1,6 @@
 package aily.server.service;
 
+import aily.server.DTO.MyPageDTO;
 import aily.server.entity.MyPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,26 @@ public class UserService {
             return "id_ok";
         } else {
             return "id_fail";
+        }
+    }
+
+    public String test(String phone) {
+        Optional<User> user = userRepository.findUserByPhonenumber(phone);
+        if(user.isPresent()){
+            MyPageDTO myPageDTO = MyPageDTO.toMyPageDTO(user.get().getMyPage());
+            return myPageDTO.toString();
+        } else {
+            return "notFound";
+        }
+
+    }
+
+    public String checkEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isPresent()){
+            return "no";
+        } else {
+            return "yes";
         }
     }
 }
