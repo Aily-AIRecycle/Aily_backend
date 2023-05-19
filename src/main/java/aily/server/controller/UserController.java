@@ -1,30 +1,26 @@
 package aily.server.controller;
 
-import aily.server.DTO.SignDTO;
+import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
-import aily.server.entity.MyPage;
 import aily.server.entity.User;
 import aily.server.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     public final UserService userService;
-
     @PostMapping("/member/join")
-    public ResponseEntity<String> save (@RequestBody SignDTO signDTO) {
-        System.out.println("signDTO = " + signDTO.toString());
-        UserDTO userDTO = SignDTO.toUserDTO(signDTO);
+    public ResponseEntity<String> save (@RequestBody UserDTO userDTO) {
+        //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
         User user = User.saveToEntity(userDTO);
         userService.signUp(user);
         return ResponseEntity.ok("회원가입 완료!");
+
     }
 
     @GetMapping("/member/join")
