@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import aily.server.DTO.UserDTO;
 import aily.server.entity.User;
 import aily.server.repository.UserRepository;
-
-import java.util.List;
 import java.util.Optional;
 
 

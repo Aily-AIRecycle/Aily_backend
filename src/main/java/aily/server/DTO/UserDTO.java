@@ -2,7 +2,6 @@ package aily.server.DTO;
 
 import aily.server.entity.User;
 import lombok.*;
-//import aily.server.entity.User;
 
 @Getter
 @Setter
