@@ -1,7 +1,6 @@
 package aily.server.service;
 
 import aily.server.DTO.MyPageDTO;
-import aily.server.entity.MyPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import aily.server.DTO.UserDTO;
@@ -55,4 +54,6 @@ public class UserService {
             return "yes";
         }
     }
+
+
 }
