@@ -1,0 +1,15 @@
+package aily.server.repository;
+
+import aily.server.entity.testboard;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Repository;
+
+
+@Repository                                         //어떤엔티티를 넣을것이냐, 엔티티의 id의 타입
+@EnableJpaRepositories
+public interface BoardRepository extends JpaRepository<testboard, Integer> {
+    Page<testboard> findByTitleContaining(String searchKeyword, Pageable pageable);
+}
