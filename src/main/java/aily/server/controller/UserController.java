@@ -2,18 +2,19 @@ package aily.server.controller;
 
 import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
+import aily.server.authEmail.AuthRequest;
 import aily.server.entity.User;
+import aily.server.service.MailService;
 import aily.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     public final UserService userService;
+    public final MailService mailService;
     @PostMapping("/member/join")
     public ResponseEntity<String> save (@RequestBody UserDTO userDTO) {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
@@ -21,16 +22,6 @@ public class UserController {
         userService.signUp(user);
         return ResponseEntity.ok("회원가입 완료!");
 
-    }
-
-    @GetMapping("/member/join")
-    public String save() {
-        return "signUp";
-    }
-
-    @GetMapping("/member/login")
-    public String login(){
-        return "signIn";
     }
 
     @PostMapping("/member/login")
@@ -49,6 +40,16 @@ public class UserController {
     public String emailCheck (@RequestBody UserDTO userDTO) {
         System.out.println("email = " + userDTO.getEmail());
         return userService.checkEmail(userDTO.getEmail());
+    }
+
+    @PostMapping("/member/auth-email")
+    public ResponseEntity<String> auth(@RequestBody AuthRequest request) throws Exception {
+        String email = request.getEmail();
+        System.out.println("요청한 Email = " + email + " 생성된 코드 = " + request.getCode());
+
+        mailService.sendMail(email, "[Aily] 이메일 인증 코드 안내", request.getCode());
+
+        return ResponseEntity.ok(request.getCode());
     }
 
 }
