@@ -1,6 +1,6 @@
 package aily.server.controller;
 
-import aily.server.entity.testboard;
+import aily.server.entity.redict;
 import aily.server.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(testboard board, Model model)throws Exception{
+    public String boardWritePro(redict board, Model model)throws Exception{
 
         boardService.write(board);
 
@@ -43,7 +43,7 @@ public class BoardController {
                             String searchKeyword){
 
         /*검색기능-3*/
-        Page<testboard> list = null;
+        Page<redict> list = null;
 
         /*searchKeyword = 검색하는 단어*/
         if(searchKeyword == null){
@@ -90,9 +90,9 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") int id, testboard board, MultipartFile file)throws Exception {
+    public String boardUpdate(@PathVariable("id") int id, redict board, MultipartFile file)throws Exception {
         //기존에있던글이 담겨져서온다.
-        testboard boardTemp = boardService.boardview(id);
+        redict boardTemp = boardService.boardview(id);
 
         //기존에있던 내용을 새로운 내용으로 덮어씌운다.
         boardTemp.setTitle(board.getTitle());
