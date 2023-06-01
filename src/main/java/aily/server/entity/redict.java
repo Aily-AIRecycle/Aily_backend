@@ -6,17 +6,20 @@ import lombok.*;
 
 @Entity
 @Data
-@Table(name = "board")
+@Table(name = "dict")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-public class testboard {
+public class redict {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title",length = 300)
+    @Column(name = "number")
+    private int number;
+
+    @Column(name = "name",length = 300)
     private String title;
 
     @Column(name = "content", length = 2000)
