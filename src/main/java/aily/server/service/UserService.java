@@ -18,7 +18,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public String signIn(UserDTO params) {
+    public UserDTO signIn(UserDTO params) {
         Optional<User> user = userRepository.findByEmail(params.getEmail());
         if(user.isPresent()){
             UserDTO userDTO = UserDTO.toUserDTO(user.get());
@@ -27,11 +27,18 @@ public class UserService {
             System.out.println("db = " + dbPass);
             System.out.println("input = " + inputPass);
             if(dbPass.equals(inputPass)){
-                return "all_ok";
+                //all_ok
+                userDTO.setPassword("");
+                System.out.println("all_ok");
+                return userDTO;
             }
-            return "id_ok";
+            //id만 맞고 비밀번호 틀렸을 때 id_ok
+            System.out.println("id_ok");
+            return params;
         } else {
-            return "id_fail";
+            System.out.println("faild");
+            params.setEmail("Faild");
+            return params;
         }
     }
 
@@ -43,7 +50,6 @@ public class UserService {
         } else {
             return "notFound";
         }
-
     }
 
     public String checkEmail(String email) {
@@ -54,6 +60,4 @@ public class UserService {
             return "yes";
         }
     }
-
-
 }

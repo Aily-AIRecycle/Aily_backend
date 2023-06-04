@@ -25,9 +25,10 @@ public class UserController {
     }
 
     @PostMapping("/member/login")
-    public String loginRe (@RequestBody UserDTO params) {
-        String loginResult = userService.signIn(params);
-        return loginResult;
+    public ResponseEntity<UserDTO> loginRe (@RequestBody UserDTO params) {
+        UserDTO loginResult = userService.signIn(params);
+        System.out.println("loginResult = " + loginResult);
+        return ResponseEntity.ok(loginResult);
     }
 
     @GetMapping("/member/{phone}")
