@@ -53,4 +53,37 @@ public class UserController {
         return ResponseEntity.ok(request.getCode());
     }
 
+    @GetMapping("/member/EmailFind/{email}")
+    public ResponseEntity<String> emailFind(@PathVariable String email){
+        String result = userService.checkEmail(email);
+        if(result.equals("no")){
+            //중복됨 == 있다는 거
+            result = email;
+        } else if(result.equals("yes")){
+            //중복안됨 == 없음
+            result = "NotFound";
+        } else {
+            result = "error";
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/member/ChPwd")
+    public ResponseEntity<String> checkPwd(@RequestBody UserDTO userDTO){
+        String result = userService.checkPwd(userDTO);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/member/ChPwd/ch")
+    public ResponseEntity<String> changPwd(@RequestBody UserDTO userDTO){
+        String result = userService.changPwd(userDTO);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/member/ChNick/{nickname}")
+    public ResponseEntity<String> checkNick(@PathVariable String nickname){
+        String result = userService.checkNick(nickname);
+        return ResponseEntity.ok(result);
+    }
+
 }
