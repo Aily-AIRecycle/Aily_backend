@@ -25,9 +25,10 @@ public class UserController {
     }
 
     @PostMapping("/member/login")
-    public String loginRe (@RequestBody UserDTO params) {
-        String loginResult = userService.signIn(params);
-        return loginResult;
+    public ResponseEntity<UserDTO> loginRe (@RequestBody UserDTO params) {
+        UserDTO loginResult = userService.signIn(params);
+        System.out.println("loginResult = " + loginResult);
+        return ResponseEntity.ok(loginResult);
     }
 
     @GetMapping("/member/{phone}")
@@ -50,6 +51,39 @@ public class UserController {
         mailService.sendMail(email, "[Aily] 이메일 인증 코드 안내", request.getCode());
 
         return ResponseEntity.ok(request.getCode());
+    }
+
+    @GetMapping("/member/EmailFind/{email}")
+    public ResponseEntity<String> emailFind(@PathVariable String email){
+        String result = userService.checkEmail(email);
+        if(result.equals("no")){
+            //중복됨 == 있다는 거
+            result = email;
+        } else if(result.equals("yes")){
+            //중복안됨 == 없음
+            result = "NotFound";
+        } else {
+            result = "error";
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/member/ChPwd")
+    public ResponseEntity<String> checkPwd(@RequestBody UserDTO userDTO){
+        String result = userService.checkPwd(userDTO);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/member/ChPwd/ch")
+    public ResponseEntity<String> changPwd(@RequestBody UserDTO userDTO){
+        String result = userService.changPwd(userDTO);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/member/ChNick/{nickname}")
+    public ResponseEntity<String> checkNick(@PathVariable String nickname){
+        String result = userService.checkNick(nickname);
+        return ResponseEntity.ok(result);
     }
 
 }
