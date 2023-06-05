@@ -21,6 +21,12 @@ public class UserDTO extends MyPageDTO {
         userDTO.setBirth(user.getBirth());
         userDTO.setGender(user.getGender());
         userDTO.setEmail(user.getEmail());
+        userDTO.setNickname(user.getMyPage().getNickname());
+        userDTO.setProfile(user.getMyPage().getProfile());
+        userDTO.setPoint(user.getMyPage().getPoint());
+        userDTO.setCAN(user.getMyPage().getCAN());
+        userDTO.setPET(user.getMyPage().getPET());
+        userDTO.setGEN(user.getMyPage().getGEN());
         return userDTO;
     }
 }
