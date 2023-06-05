@@ -18,10 +18,13 @@ public class DataController {
     private final DataService dataService;
     private final AutoData autoData;
     @GetMapping("/member/dataset")
-    public List<AvgDataDTO> ddd() throws ParseException {
+    public void ddd() throws ParseException {
             dataService.ResultAvgNumber();
-            dataService.findAvgData();
             autoData.avgdatasave();
-            return dataService.findAvgData();
         }
+    @GetMapping("/member/showshowata")
+    public List<AvgDataDTO> dddd() throws ParseException {
+
+        return dataService.findAvgData();
+    }
 }
