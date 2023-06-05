@@ -27,8 +27,8 @@ public class UserService {
             UserDTO userDTO = UserDTO.toUserDTO(user.get());
             String dbPass = userDTO.getPassword();
             String inputPass = params.getPassword();
-            System.out.println("db = " + dbPass);
-            System.out.println("input = " + inputPass);
+//            System.out.println("db = " + dbPass);
+//            System.out.println("input = " + inputPass);
             if(dbPass.equals(inputPass)){
                 //all_ok
                 userDTO.setPassword("");
