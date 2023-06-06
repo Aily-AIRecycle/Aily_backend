@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository                                         //어떤엔티티를 넣을것이냐, 엔티티의 id의 타입
 @EnableJpaRepositories
-public interface BoardRepository extends JpaRepository<redict, Integer> {
+public interface BoardRepository extends JpaRepository<redict, Long> {
     Page<redict> findByTitleContaining(String searchKeyword, Pageable pageable);
 }
