@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class  UserController {
     public final UserService userService;
     public final MailService mailService;
     @PostMapping("/member/join")
@@ -32,8 +32,7 @@ public class UserController {
 
     @GetMapping("/member/{phone}")
     public String mypage (@PathVariable String phone) {
-        String info = userService.test(phone);
-        return info;
+        return userService.test(phone);
     }
 
     @PostMapping("/member/EmailCheck")

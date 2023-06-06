@@ -16,6 +16,8 @@ public class DataService {
 
     private final DataRepository dataRepository;
 
+    
+    //데이터 셋을 db에 저장시키는 함수
     public void saveData(AvgDataDTO avgDataDTO) {
         AvgDataEntity dataEntity = new AvgDataEntity();
         dataEntity.setId(avgDataDTO.getAilynumber());
@@ -23,15 +25,17 @@ public class DataService {
         dataEntity.setCan(avgDataDTO.getAvgcan());
         dataEntity.setGen(avgDataDTO.getAvggen());
         dataEntity.setPet(avgDataDTO.getAvgpet());
-
         dataRepository.save(dataEntity);
     }
 
+    //기계 이름을 전부 조회후, 중복을 제거하여 몆대인지 파악하는 함수
     public Long countDistinctNumber() {
         Optional<Long> dd = dataRepository.countDistinctNumber();
         return dd.orElse(0L);
     }
-
+    
+    
+    //최근에 저장된 날짜 순으로 정렬하여 데이터를 뽑아오는 함수
     public List<AvgDataDTO> findAvgData() {
         Long distinctNumber = countDistinctNumber();
         Optional<List<AvgDataEntity>> data = dataRepository.findRecentDataOptional(Optional.of(distinctNumber));
@@ -46,7 +50,6 @@ public class DataService {
                 dataDTO.setAvgpet(avgDataEntity.getPet());
                 dataDTO.setAvggen(avgDataEntity.getGen());
                 dataDTO.setAvgcan(avgDataEntity.getCan());
-                System.out.println("dataDTO.getAilynumber() = " + dataDTO.getAilynumber());
                 // 나머지 필드에 대한 매핑 작업 수행
                 dataDTOList.add(dataDTO);
             }
@@ -55,9 +58,4 @@ public class DataService {
         return dataDTOList;
     }
 
-    public String findAllData() {
-        List<AvgDataEntity> allData = dataRepository.findAll();
-        // Do something with allData if needed
-        return "ok";
-    }
 }
