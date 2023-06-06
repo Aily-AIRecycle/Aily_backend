@@ -23,7 +23,7 @@ public class AutoData {
 //    @Scheduled(cron = "0/10 * * * * *")
     public void avgdatasave() throws ParseException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:5000/member/ailydate";
+        String url = "http://175.113.68.69:2222/member/ailydate";
         String response = restTemplate.getForObject(url, String.class);
         JSONParser jsonParser = new JSONParser();
         JSONObject obj = (JSONObject) jsonParser.parse(response);
@@ -40,7 +40,7 @@ public class AutoData {
             avgDataDTO.setAvgcan(String.valueOf(map.get("can")));
             avgDataDTO.setDay(String.valueOf(map.get("day")));
 
-            dataService.DataSave(avgDataDTO);
+            dataService.saveData(avgDataDTO);
         }
 
     }

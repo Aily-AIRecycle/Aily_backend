@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
+@Table(name = "my_page")
 public class MyPage {
     @Id
     private String nickname;

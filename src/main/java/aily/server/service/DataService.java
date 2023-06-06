@@ -16,9 +16,7 @@ public class DataService {
 
     private final DataRepository dataRepository;
 
-    public void DataSave(AvgDataDTO avgDataDTO){
-
-
+    public void saveData(AvgDataDTO avgDataDTO) {
         AvgDataEntity dataEntity = new AvgDataEntity();
         dataEntity.setId(avgDataDTO.getAilynumber());
         dataEntity.setDay(avgDataDTO.getDay());
@@ -26,22 +24,17 @@ public class DataService {
         dataEntity.setGen(avgDataDTO.getAvggen());
         dataEntity.setPet(avgDataDTO.getAvgpet());
 
-
         dataRepository.save(dataEntity);
-
     }
-    public Optional<Long> ResultAvgNumber(){
+
+    public Long countDistinctNumber() {
         Optional<Long> dd = dataRepository.countDistinctNumber();
-        Long result = 0L;
-        if (dd.isPresent()) {
-            result = dd.get();
-            System.out.println(result);
-        }
-        return result.describeConstable();
+        return dd.orElse(0L);
     }
 
     public List<AvgDataDTO> findAvgData() {
-        Optional<List<AvgDataEntity>> data = dataRepository.findRecentDataOptional(ResultAvgNumber());
+        Long distinctNumber = countDistinctNumber();
+        Optional<List<AvgDataEntity>> data = dataRepository.findRecentDataOptional(Optional.of(distinctNumber));
         List<AvgDataDTO> dataDTOList = new ArrayList<>();
 
         data.ifPresent(avgDataEntities -> {
@@ -60,5 +53,11 @@ public class DataService {
         });
 
         return dataDTOList;
+    }
+
+    public String findAllData() {
+        List<AvgDataEntity> allData = dataRepository.findAll();
+        // Do something with allData if needed
+        return "ok";
     }
 }

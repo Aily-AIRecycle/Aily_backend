@@ -1,6 +1,5 @@
 package aily.server.controller;
 
-import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
 import aily.server.authEmail.AuthRequest;
 import aily.server.entity.User;

@@ -19,7 +19,6 @@ public class DataController {
     private final AutoData autoData;
     @GetMapping("/member/dataset")
     public void ddd() throws ParseException {
-            dataService.ResultAvgNumber();
             autoData.avgdatasave();
         }
     @GetMapping("/member/showshowata")
@@ -27,4 +26,11 @@ public class DataController {
 
         return dataService.findAvgData();
     }
+
+//    @GetMapping("/member/showshowata2")
+//    public String ok() throws ParseException {
+//        dataService.countDistinctNumber();
+//        System.out.println(dataService.countDistinctNumber());
+//        return dataService.findAllData();
+//    }
 }

@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @IdClass(AvgDataId.class)
-@Table(name = "avgdataentity")
 public class AvgDataEntity {
 
     @Id
