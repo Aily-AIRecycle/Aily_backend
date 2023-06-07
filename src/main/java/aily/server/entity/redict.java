@@ -22,6 +22,9 @@ public class redict {
     @Column(name = "name",length = 300)
     private String title;
 
+    @Column(name = "imgfile", length = 100)
+    private String imgfile;
+
     @Column(name = "content", length = 2000)
     private String content;
 

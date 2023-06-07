@@ -25,16 +25,10 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    //게시글리스트처리
-    public Page<redict> boardList(Pageable pageable){
-        //findAll : 테스트보드라는 클래스가 담긴 List를 반환하는것을 확인할수있다
-        return boardRepository.findAll(pageable);
-    }
-
     /*검색기능-2*/
     //검색
-    public Page<redict> boardSearchList(String searchKeyword, Pageable pageable){
-        return boardRepository.findByTitleContaining(searchKeyword, pageable);
+    public List<redict> boardSearchList(String searchKeyword){
+        return boardRepository.findByTitleContaining(searchKeyword);
     }
 
     //특정 게시글 불러오기
@@ -68,8 +62,10 @@ public class BoardService {
         Optional<redict> dict = boardRepository.findById(id);
         if(dict.isPresent()){
             redict chdict = dict.get();
-            chdict.setContent(board.getContent());
+            chdict.setNumber(board.getNumber());
             chdict.setTitle(board.getTitle());
+            chdict.setImgfile(board.getImgfile());
+            chdict.setContent(board.getContent());
             boardRepository.save(chdict);
         }
     }

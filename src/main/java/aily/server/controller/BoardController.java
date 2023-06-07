@@ -3,7 +3,7 @@ package aily.server.controller;
 import aily.server.DTO.BoardDTO;
 import aily.server.entity.redict;
 import aily.server.service.BoardService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class BoardController {
 
-    @Autowired
-    private BoardService boardService;
+    private final BoardService boardService;
 
     @GetMapping("/board/write") //어떤 url로 접근할 것인지 정해주는 어노테이션 //localhost:8080/board/write
     public String boardWriteForm() {
@@ -32,9 +32,13 @@ public class BoardController {
     }
 
     @GetMapping("/board/list")
-    public ResponseEntity<List> boardList(){
-        List<BoardDTO> list= boardService.findAll();
-        return ResponseEntity.ok(list);
+    public ResponseEntity<List> boardList(@RequestBody String searchKeyword){
+
+        if(searchKeyword.equals("")){
+            return ResponseEntity.ok(boardService.findAll()); //기존의 리스트보여줌
+        }else{
+            return ResponseEntity.ok(boardService.boardSearchList(searchKeyword)); //검색리스트반환
+        }
     }
 
 //    @GetMapping("/board/list")
