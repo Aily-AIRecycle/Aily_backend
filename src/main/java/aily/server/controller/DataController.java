@@ -17,20 +17,18 @@ public class DataController {
 
     private final DataService dataService;
     private final AutoData autoData;
+
+    //데이터 파일 강제 저장 ( 테스트 용  )
     @GetMapping("/member/dataset")
-    public void ddd() throws ParseException {
+    public void AvgData() throws ParseException {
             autoData.avgdatasave();
         }
-    @GetMapping("/member/showshowata")
-    public List<AvgDataDTO> dddd() throws ParseException {
 
+    //데이터 파일 리액트로 전송
+    @GetMapping("/member/showshowata")
+    public List<AvgDataDTO> AvgDataShow() {
         return dataService.findAvgData();
     }
 
-//    @GetMapping("/member/showshowata2")
-//    public String ok() throws ParseException {
-//        dataService.countDistinctNumber();
-//        System.out.println(dataService.countDistinctNumber());
-//        return dataService.findAllData();
-//    }
+
 }
