@@ -25,6 +25,9 @@ public class BoardController {
     public ResponseEntity<String> boardWritePro(@RequestBody redict board, Model model){
         boardService.write(board);
 
+        String imagePath = "/var/www/images/" + board.getImgfile();
+
+        model.addAttribute("imgPath", imagePath);
         model.addAttribute("message","글작성이 완료되었습니다");
         model.addAttribute("searchUrl","/board/list");
 

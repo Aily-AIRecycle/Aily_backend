@@ -3,6 +3,7 @@ package aily.server.service;
 import aily.server.DTO.BoardDTO;
 import aily.server.entity.redict;
 import aily.server.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,15 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired(required = true) //new를 써야하지만, 스프링부트가 알아서 읽어와서 주입을해준다.
-    private BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
     //글작성처리
     public void write(redict board ){
-
-
         boardRepository.save(board);
     }
 
