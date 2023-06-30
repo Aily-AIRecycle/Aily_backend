@@ -13,6 +13,6 @@ public class AuthRequest {
 
     public AuthRequest() {
         Random rd = new Random();
-        this.code = "" + (rd.nextInt(8999) + 1000) +"";
+        this.code = "" + (rd.nextInt(899999) + 100000) +"";
     }
 }

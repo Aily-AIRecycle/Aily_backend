@@ -15,7 +15,9 @@ public class MyPage {
     @Column(name = "point")
     @ColumnDefault("0")
     private int point;
+
     @Column(name = "profile")
+    @ColumnDefault("https://aliy.store/member/image/default.png")
     private String profile;
 
     @ColumnDefault("0")
