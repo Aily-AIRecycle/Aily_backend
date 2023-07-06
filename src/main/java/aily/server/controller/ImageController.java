@@ -1,7 +1,6 @@
 package aily.server.controller;
 
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import java.nio.file.Paths;
 public class ImageController {
 
     private static final String IMAGE_DIRECTORY = "/home/lee/image/";
-    private static final String sourceFilePath = "/home/lee/image/default/image.png";
 
     //유저 image 확인
     @GetMapping(value = "image/{userid}.png", produces = MediaType.IMAGE_JPEG_VALUE)
