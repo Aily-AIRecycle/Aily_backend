@@ -16,7 +16,13 @@ public class DataService {
 
     private final DataRepository dataRepository;
 
+    //Number의 갯수
+    public Optional<List<String>> findnumber(){
+
+        return dataRepository.findnumbers();
+    }
     
+
     //데이터 셋을 db에 저장시키는 함수
     public void saveData(AvgDataDTO avgDataDTO) {
         AvgDataEntity dataEntity = new AvgDataEntity();
@@ -27,35 +33,28 @@ public class DataService {
         dataEntity.setPet(avgDataDTO.getAvgpet());
         dataRepository.save(dataEntity);
     }
-
-    //기계 이름을 전부 조회후, 중복을 제거하여 몆대인지 파악하는 함수
-    public Long countDistinctNumber() {
-        Optional<Long> dd = dataRepository.countDistinctNumber();
-        return dd.orElse(0L);
-    }
     
     
     //최근에 저장된 날짜 순으로 정렬하여 데이터를 뽑아오는 함수
     public List<AvgDataDTO> findAvgData() {
-        Long distinctNumber = countDistinctNumber();
-        Optional<List<AvgDataEntity>> data = dataRepository.findRecentDataOptional(Optional.of(distinctNumber));
+        Optional<List<String>> distinctNumber = findnumber();
         List<AvgDataDTO> dataDTOList = new ArrayList<>();
 
-        data.ifPresent(avgDataEntities -> {
-            for (AvgDataEntity avgDataEntity : avgDataEntities) {
+        distinctNumber.ifPresent(numbers -> {
+            for (String number : distinctNumber.get()) {
+                Optional<AvgDataEntity> dataOptional = dataRepository.findLatestByNumber(String.valueOf(number));
                 AvgDataDTO dataDTO = new AvgDataDTO();
-                // 데이터 매핑 작업
-                dataDTO.setAilynumber(avgDataEntity.getId());
-                dataDTO.setDay(avgDataEntity.getDay());
-                dataDTO.setAvgpet(avgDataEntity.getPet());
-                dataDTO.setAvggen(avgDataEntity.getGen());
-                dataDTO.setAvgcan(avgDataEntity.getCan());
-                // 나머지 필드에 대한 매핑 작업 수행
+                // Set data from distinctNumber
+                // Set data from dataOptional
+                dataDTO.setAilynumber(number);
+                dataDTO.setDay(dataOptional.get().getDay());
+                dataDTO.setAvgpet(dataOptional.get().getPet());
+                dataDTO.setAvggen(dataOptional.get().getGen());
+                dataDTO.setAvgcan(dataOptional.get().getCan());
+                // do the mapping for the rest of the fields
                 dataDTOList.add(dataDTO);
             }
         });
-
         return dataDTOList;
     }
-
 }

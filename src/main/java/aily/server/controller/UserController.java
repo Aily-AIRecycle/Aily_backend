@@ -2,6 +2,7 @@ package aily.server.controller;
 
 import aily.server.DTO.UserDTO;
 import aily.server.authEmail.AuthRequest;
+import aily.server.entity.MyPage;
 import aily.server.entity.User;
 import aily.server.service.MailService;
 import aily.server.service.UserService;
@@ -9,16 +10,39 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 public class  UserController {
     public final UserService userService;
     public final MailService mailService;
+
+
+    //각종 테스트 url
+//    @PostMapping("/member/join")
+//    public ResponseEntity<String> Test(@RequestBody UserDTO userDTO) {
+//        //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
+//        userDTO.setProfile("dddd");
+//        System.out.println("DtoMypqge :: " + userDTO.getProfile());
+//        User user = User.saveToEntity(userDTO);
+//        System.out.println("mypqge :: " + user.getMyPage().getProfile());
+//        userService.imageUp(user);
+//
+//        return ResponseEntity.ok("회원가입 완료!");
+//    }
+
+
     @PostMapping("/member/join")
-    public ResponseEntity<String> save (@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> save (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
+
+        userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + ".png");
         User user = User.saveToEntity(userDTO);
+        userService.getImage(userDTO.getNickname());
+        System.out.println("Nickname :: " + userDTO.getNickname());
         userService.signUp(user);
+
         return ResponseEntity.ok("회원가입 완료!");
 
     }

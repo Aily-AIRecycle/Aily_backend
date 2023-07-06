@@ -30,9 +30,7 @@ public class AutoData {
         JSONParser jsonParser = new JSONParser();
         JSONObject obj = (JSONObject) jsonParser.parse(response);
         System.out.println("obj size : : : : :" + obj.size());
-        //        새 Garbege 데이터 생성
-        //        randomService.randomdata();
-        for (int i = 0; i < obj.size()-1; i++) {
+        for (int i = 0; i < obj.size(); i++) {
             AvgDataDTO avgDataDTO = new AvgDataDTO();
             avgDataDTO.setAilynumber(String.valueOf(i + 1));
             JSONObject map = (JSONObject) obj.get(String.valueOf(i + 1));

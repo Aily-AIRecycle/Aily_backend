@@ -14,9 +14,11 @@ import java.util.Optional;
 public interface DataRepository extends JpaRepository<AvgDataEntity, Long> {
 
 
-    @Query("SELECT COUNT(DISTINCT e.id) FROM AvgDataEntity e")
-    Optional<Long> countDistinctNumber();
+    @Query("SELECT DISTINCT a.id FROM AvgDataEntity a")
+    Optional<List<String>> findnumbers();
 
-    @Query(value = "SELECT a.* FROM AvgDataEntity a ORDER BY a.day DESC LIMIT :limit", nativeQuery = true)
-    Optional<List<AvgDataEntity>> findRecentDataOptional(@Param("limit") Optional<Long> limit);
+    @Query(value = "SELECT a FROM AvgDataEntity a WHERE a.id = :number ORDER BY a.day DESC LIMIT 1")
+    Optional<AvgDataEntity> findLatestByNumber(@Param("number") String number);
+
+
 }

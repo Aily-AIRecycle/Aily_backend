@@ -41,6 +41,7 @@ public class User {
         user.setEmail(userDTO.getEmail());
         user.setPhonenumber(userDTO.getPhonenumber());
         myPage.setNickname(userDTO.getNickname());
+        myPage.setProfile(userDTO.getProfile());
         user.setMyPage(myPage);
         myPage.setUser(user);
         System.out.println("메소드 실행됨");

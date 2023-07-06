@@ -4,10 +4,20 @@ import aily.server.DTO.MyPageDTO;
 import aily.server.entity.MyPage;
 import aily.server.repository.MyPageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import aily.server.DTO.UserDTO;
 import aily.server.entity.User;
 import aily.server.repository.UserRepository;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Optional;
 
 
@@ -16,6 +26,13 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final MyPageRepository myPageRepository;
+    private static final String IMAGE_DIRECTORY = "/home/lee/image/";
+    private static final String sourceFilePath = "/home/lee/image/default/image.png";
+    //테스트
+//    public void imageUp(User user){
+//        System.out.println(user.getMyPage().getProfile());
+//        userRepository.save(user);
+//    }
 
     public void signUp(User user) {
         userRepository.save(user);
@@ -102,6 +119,53 @@ public class UserService {
         } else {
             //중복 안됨
             return "yes";
+        }
+    }
+
+
+    public ResponseEntity<ByteArrayResource> getImage(String id) throws IOException {
+        String imagePath = IMAGE_DIRECTORY + id + "/image.png";
+        Path path = Paths.get(imagePath);
+
+            // 파일이 존재하지 않을 경우
+            // 요구에 맞게 파일 생성
+            File sourceFile = new File(sourceFilePath);
+            File destinationFile = new File(imagePath);
+
+            createImageFile(id);
+
+            copyFile(sourceFile, destinationFile);
+
+            // 파일을 다시 읽어와 리턴
+            byte[] imageBytes = Files.readAllBytes(path);
+            ByteArrayResource resource = new ByteArrayResource(imageBytes);
+            return ResponseEntity.ok()
+                    .contentLength(imageBytes.length)
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+        }
+
+//    }
+    //신규 가입시 회원 폴더 생성
+    private void createImageFile(String id) throws IOException {
+        String directoryPath = IMAGE_DIRECTORY + id;
+
+        Path directory = Paths.get(directoryPath);
+        if (!Files.exists(directory)) {
+            Files.createDirectories(directory);
+        }
+    }
+
+    //default 이미지 파일 복사
+    private static void copyFile(File source, File destination) throws IOException {
+        try (InputStream inputStream = new FileInputStream(source);
+             OutputStream outputStream = new FileOutputStream(destination)) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
         }
     }
 }
