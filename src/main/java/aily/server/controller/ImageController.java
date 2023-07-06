@@ -30,7 +30,7 @@ public class ImageController {
                     .body(resource);
     }
     
-    //유저 프로필사진 변경 url 경로
+    //유저 프로필사진 변경 urL 경로
     @PostMapping("/member/upload/{userid}")
     public String handleFileUpload(@PathVariable("userid") String id,@RequestParam("image") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
