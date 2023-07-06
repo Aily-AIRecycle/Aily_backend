@@ -43,7 +43,7 @@ public class ImageController {
 
 
 
-            // 저장할 파일 경로
+            // 저장할 파일 경로1
 //            Path filePath = Path.of(uploadDir + "/" + file.getOriginalFilename());
             Path filePath = uploadDir.resolve("image.png");
             System.out.println(filePath);
