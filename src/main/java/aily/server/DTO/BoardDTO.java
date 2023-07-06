@@ -16,6 +16,7 @@ public class BoardDTO {
     private int number;
     private String title;
     private String content;
+    private String imgfile;
 
     public static BoardDTO toBoardDTO(redict board){
         BoardDTO boardDTO = new BoardDTO();
@@ -23,6 +24,7 @@ public class BoardDTO {
         boardDTO.setNumber(board.getNumber());
         boardDTO.setTitle(board.getTitle());
         boardDTO.setContent(board.getContent());
+        boardDTO.setImgfile(board.getImgfile());
         return boardDTO;
     }
 }
