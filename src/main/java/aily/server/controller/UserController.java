@@ -6,11 +6,15 @@ import aily.server.entity.MyPage;
 import aily.server.entity.User;
 import aily.server.service.MailService;
 import aily.server.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +22,27 @@ public class  UserController {
     public final UserService userService;
     public final MailService mailService;
 
+
+    @RequestMapping (value = "/member/mypage", method={RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<String> postmypage(@RequestBody UserDTO userDTO) throws JsonProcessingException {
+        String phonenumber = userService.userPhonenumber(userDTO.getNickname());
+        System.out.println(phonenumber);
+        String data = userService.test(phonenumber);
+        System.out.println("post" +userDTO.getNickname());
+
+        String[] fields = data.substring(data.indexOf("(") + 1, data.indexOf(")")).split(", ");
+        Map<String, Object> result = new HashMap<>();
+        for (String field : fields) {
+            String[] keyValue = field.split("=");
+            String key = keyValue[0];
+            String value = keyValue[1];
+            result.put(key, value);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonData = objectMapper.writeValueAsString(result);
+        return ResponseEntity.ok(jsonData);
+    }
 
 
     @PostMapping("/member/join")

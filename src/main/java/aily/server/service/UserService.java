@@ -35,7 +35,10 @@ public class UserService {
 //        userRepository.save(user);
 //    }
 
-
+    public String userPhonenumber(String phonenumber){
+        System.out.println("userPhonenumber" + phonenumber);
+        return userRepository.findPhoneNumberByNickname(phonenumber);
+    }
 
 
     public void signUp(User user) {
