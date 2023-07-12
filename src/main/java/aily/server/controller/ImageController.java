@@ -16,12 +16,12 @@ public class ImageController {
 
     private static final String IMAGE_DIRECTORY = "/home/lee/image/";
 
-    //유저 image 확인
-    @GetMapping(value = "image/{userid}.png", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<ByteArrayResource> getImage(@PathVariable("userid") String id) throws IOException {
-        String imagePath = IMAGE_DIRECTORY + id + "/image.png";
-        Path path = Paths.get(imagePath);
-
+        //유저 image 확인
+        @GetMapping(value = "image/{userid}/image.png", produces = MediaType.IMAGE_JPEG_VALUE)
+        public ResponseEntity<ByteArrayResource> getImage(@PathVariable("userid") String id) throws IOException {
+            String imagePath = IMAGE_DIRECTORY + id + "/image.png";
+            Path path = Paths.get(imagePath);
+            System.out.println("getImage" + imagePath);
             byte[] imageBytes = Files.readAllBytes(path);
             ByteArrayResource resource = new ByteArrayResource(imageBytes);
             return ResponseEntity.ok()
@@ -46,7 +46,7 @@ public class ImageController {
             // 저장할 파일 경로1
 //            Path filePath = Path.of(uploadDir + "/" + file.getOriginalFilename());
             Path filePath = uploadDir.resolve("image.png");
-            System.out.println(filePath);
+            System.out.println("handleFileUpload = "  + filePath);
             // 디렉토리가 없는 경우 생성
             File directory = new File(uploadDir.toUri());
             if (!directory.exists()) {

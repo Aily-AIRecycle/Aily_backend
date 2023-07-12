@@ -42,6 +42,10 @@ public class User {
         user.setPhonenumber(userDTO.getPhonenumber());
         myPage.setNickname(userDTO.getNickname());
         myPage.setProfile(userDTO.getProfile());
+        myPage.setPoint(userDTO.getPoint());
+        myPage.setPET(userDTO.getPET());
+        myPage.setGEN(userDTO.getGEN());
+        myPage.setCAN(userDTO.getCAN());
         user.setMyPage(myPage);
         myPage.setUser(user);
         System.out.println("메소드 실행됨");

@@ -19,19 +19,6 @@ public class  UserController {
     public final MailService mailService;
 
 
-    //각종 테스트 url
-//    @PostMapping("/member/join")
-//    public ResponseEntity<String> Test(@RequestBody UserDTO userDTO) {
-//        //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
-//        userDTO.setProfile("dddd");
-//        System.out.println("DtoMypqge :: " + userDTO.getProfile());
-//        User user = User.saveToEntity(userDTO);
-//        System.out.println("mypqge :: " + user.getMyPage().getProfile());
-//        userService.imageUp(user);
-//
-//        return ResponseEntity.ok("회원가입 완료!");
-//    }
-
 
     @PostMapping("/member/join")
     public ResponseEntity<String> save (@RequestBody UserDTO userDTO) throws IOException {
@@ -54,10 +41,10 @@ public class  UserController {
         return ResponseEntity.ok(loginResult);
     }
 
-    @GetMapping("/member/{phone}")
-    public String mypage (@PathVariable String phone) {
-        return userService.test(phone);
-    }
+//    @GetMapping("/member/{phone}")
+//    public String mypage (@PathVariable String phone) {
+//        return userService.test(phone);
+//    }
 
     @PostMapping("/member/EmailCheck")
     public String emailCheck (@RequestBody UserDTO userDTO) {

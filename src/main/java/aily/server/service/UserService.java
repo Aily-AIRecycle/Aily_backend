@@ -12,6 +12,7 @@ import aily.server.DTO.UserDTO;
 import aily.server.entity.User;
 import aily.server.repository.UserRepository;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -33,6 +34,9 @@ public class UserService {
 //        System.out.println(user.getMyPage().getProfile());
 //        userRepository.save(user);
 //    }
+
+
+
 
     public void signUp(User user) {
         userRepository.save(user);
@@ -68,7 +72,7 @@ public class UserService {
             MyPageDTO myPageDTO = MyPageDTO.toMyPageDTO(user.get().getMyPage());
             return myPageDTO.toString();
         } else {
-            return "notFound";
+            return "NFT";
         }
     }
 
