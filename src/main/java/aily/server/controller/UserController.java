@@ -1,5 +1,6 @@
 package aily.server.controller;
 
+import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
 import aily.server.authEmail.AuthRequest;
 import aily.server.entity.MyPage;
@@ -23,38 +24,33 @@ public class  UserController {
     public final MailService mailService;
 
 
-    @RequestMapping (value = "/member/mypage", method={RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<String> postmypage(@RequestBody UserDTO userDTO) throws JsonProcessingException {
-        String phonenumber = userService.userPhonenumber(userDTO.getNickname());
-        System.out.println(phonenumber);
-        String data = userService.test(phonenumber);
-        System.out.println("post" +userDTO.getNickname());
-
-        String[] fields = data.substring(data.indexOf("(") + 1, data.indexOf(")")).split(", ");
-        Map<String, Object> result = new HashMap<>();
-        for (String field : fields) {
-            String[] keyValue = field.split("=");
-            String key = keyValue[0];
-            String value = keyValue[1];
-            result.put(key, value);
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonData = objectMapper.writeValueAsString(result);
-        return ResponseEntity.ok(jsonData);
-    }
-
-
+    //회원가입, 비회원으로 포인트 적립후, 회원가입시 기존 정보 삭제( MyPaeg 정보 옮기고)
+    //사용자 폴더,파일 이름 변경
     @PostMapping("/member/join")
     public ResponseEntity<String> save (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
 
-        userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + ".png");
-        User user = User.saveToEntity(userDTO);
-        userService.getImage(userDTO.getNickname());
-        System.out.println("Nickname :: " + userDTO.getNickname());
-        userService.signUp(user);
-
+        if(userService.test(userDTO.getPhonenumber()).equals("NFT")) {
+            userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + ".png");
+            User user = User.saveToEntity(userDTO);
+            userService.getImage(userDTO.getNickname());
+            System.out.println("회원 아님");
+            userService.signUp(user);
+        }else{
+            MyPageDTO upuser;
+            upuser = userService.getupdatemypage(userDTO.getPhonenumber());
+            userDTO.setCAN(upuser.getCAN());
+            userDTO.setGEN(upuser.getGEN());
+            userDTO.setPET(upuser.getPET());
+            userDTO.setPoint(upuser.getPoint());
+            userDTO.setNickname(userDTO.getNickname());
+            userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + ".png");
+            User user = User.saveToEntity(userDTO);
+            System.out.println("회원임");
+            userService.delUser(user);
+            userService.signUp(user);
+            userService.renameFileFolder(userDTO.getNickname(), upuser.getNickname());
+        }
         return ResponseEntity.ok("회원가입 완료!");
 
     }

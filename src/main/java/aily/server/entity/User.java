@@ -29,7 +29,7 @@ public class User {
     @Column(name = "gender")
     private String gender;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private MyPage myPage;
 
     public static User saveToEntity(UserDTO userDTO) {

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +20,8 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Query(value = "SELECT u.phonenumber FROM MyPage m JOIN User u ON m.user = u.phonenumber WHERE m.nickname = :nickname")
     String findPhoneNumberByNickname(String nickname);
 
+    @Query(value = "SELECT u.myPage.nickname FROM MyPage m JOIN User u ON m.user = u.phonenumber WHERE u.phonenumber = :phonenumber")
+    String findNameByPhonenumber(String phonenumber);
 
 
     default void savePoint(User user1) {
