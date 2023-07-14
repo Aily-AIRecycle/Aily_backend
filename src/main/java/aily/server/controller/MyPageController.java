@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class MyPageController {
+public class MyPageController{
     private static final String JSON_FILE = "/home/lee/image/";
 
 
