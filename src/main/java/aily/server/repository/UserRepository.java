@@ -24,6 +24,7 @@ public interface UserRepository extends JpaRepository <User, Long>{
     String findNameByPhonenumber(String phonenumber);
 
 
+    //비회원 회원 가입시 기존에있던 정보를 옮기고 저장시킴
     default void savePoint(User user1) {
         System.out.println("Service : " + user1.getMyPage().getCAN());
         Optional<User> userOptional = findUserByPhonenumber(user1.getPhonenumber());
