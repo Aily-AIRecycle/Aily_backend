@@ -61,8 +61,8 @@ public class SignControllAspect {
         String encPw = SHA256Util.encData(password);
         m.setPassword(encPw);
     }
-    @Before("execution(* aily.server.service.*Service.changPwd(..))")
-    public void beforeAdviceChangPwd(JoinPoint jp) throws Exception {
+    @Before("execution(* aily.server.service.*Service.changePwd(..))")
+    public void beforeAdviceChangePwd(JoinPoint jp) throws Exception {
         Object[] args= jp.getArgs();
         UserDTO m= (UserDTO)args[0];
         String password=m.getPassword();

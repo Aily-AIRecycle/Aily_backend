@@ -3,7 +3,6 @@ package aily.server.controller;
 import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
 import aily.server.authEmail.AuthRequest;
-import aily.server.entity.MyPage;
 import aily.server.entity.User;
 import aily.server.service.MailService;
 import aily.server.service.UserService;
@@ -157,8 +156,8 @@ public class  UserController {
     }
 
     @PostMapping("/member/ChPwd/ch")
-    public ResponseEntity<String> changPwd(@RequestBody UserDTO userDTO){
-        String result = userService.changPwd(userDTO);
+    public ResponseEntity<String> changePwd(@RequestBody UserDTO userDTO){
+        String result = userService.changePwd(userDTO);
         return ResponseEntity.ok(result);
     }
 
