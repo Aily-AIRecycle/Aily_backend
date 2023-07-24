@@ -12,6 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class MyPage {
     @Id
     private String nickname;
+
     @Column(name = "point")
     @ColumnDefault("0")
     private int point;

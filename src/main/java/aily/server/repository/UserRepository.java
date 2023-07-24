@@ -13,6 +13,10 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository <User, Long>{
+
+    @Query(value = "SELECT true FROM User u where u.password = :password")
+    boolean findUserPassword(String password);
+
     Optional<User> findByEmail(String email);
 
     Optional<User> findUserByPhonenumber(String phone);
@@ -22,6 +26,7 @@ public interface UserRepository extends JpaRepository <User, Long>{
 
     @Query(value = "SELECT u.myPage.nickname FROM MyPage m JOIN User u ON m.user = u.phonenumber WHERE u.phonenumber = :phonenumber")
     String findNameByPhonenumber(String phonenumber);
+
 
 
     //비회원 회원 가입시 기존에있던 정보를 옮기고 저장시킴

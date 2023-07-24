@@ -16,7 +16,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -34,6 +33,15 @@ public class UserService {
 //        System.out.println(user.getMyPage().getProfile());
 //        userRepository.save(user);
 //    }
+
+    //회원탈퇴
+    public void deleteuser(User user){
+        userRepository.delete(user);
+    }
+
+    public boolean findpassworduser(String password){
+        return userRepository.findUserPassword(password);
+    }
 
     public String userTotalDonutes(String phonenumber){
        return myPageRepository.finduserTotalDonut(phonenumber);
