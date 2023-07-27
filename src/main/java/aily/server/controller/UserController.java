@@ -48,7 +48,7 @@ public class  UserController {
                 if (directory.exists() && directory.isDirectory()) {
                     boolean deletionSuccess = deleteDirectory(directory);
 
-                    if (deletionSuccess) {
+                    if (deletionSuccess)  {
                         ee.put("result", "deleteuserok");
                     } else {
                         ee.put("result", "file error.vo1");
