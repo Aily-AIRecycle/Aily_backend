@@ -34,8 +34,10 @@ public class  UserController {
     @RequestMapping("/member/leavuser")
     public void leaveuser(@RequestBody UserDTO userDTO, HttpServletResponse response) throws IOException {
         Map<String, String> ee = new HashMap<>();
+        System.out.println(userDTO.getPassword());
+        User user1 = User.saveToEntity(userDTO);
         try{
-            if (!userService.test(userDTO.getPhonenumber()).equals("NFT") & userService.findpassworduser(userDTO.getPassword())) {
+            if (!userService.test(userDTO.getPhonenumber()).equals("NFT") & userService.findpassworduser(user1).equals("yes")) {
 
                 System.out.println(userService.test(userDTO.getPhonenumber()));
                 User user = User.saveToEntity(userDTO);

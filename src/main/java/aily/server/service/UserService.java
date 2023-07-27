@@ -39,8 +39,12 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public boolean findpassworduser(String password){
-        return userRepository.findUserPassword(password);
+    public String findpassworduser(User user){
+        if(userRepository.findUserPassword(user.getPassword())){
+            return "yes";
+        }else {
+            return "no";
+        }
     }
 
     public String userTotalDonutes(String phonenumber){
