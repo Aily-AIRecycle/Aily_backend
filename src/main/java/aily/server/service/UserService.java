@@ -47,7 +47,7 @@ public class UserService {
         }
     }
 
-    public String userTotalDonutes(String phonenumber){
+    public String userTotalDonuts(String phonenumber){
        return myPageRepository.finduserTotalDonut(phonenumber);
     }
 
@@ -140,7 +140,7 @@ public class UserService {
         }
     }
 
-    public String changPwd(UserDTO userDTO) {
+    public String changePwd(UserDTO userDTO) {
         Optional<User> user = userRepository.findByEmail(userDTO.getEmail());
         if(user.isPresent()){
             if(user.get().getPassword().equals(userDTO.getPassword())){

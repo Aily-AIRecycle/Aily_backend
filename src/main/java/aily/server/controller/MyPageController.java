@@ -73,7 +73,7 @@ public class MyPageController{
     public List<Map<String, Integer>> TotalDonutChart(@RequestBody UserDTO params) {
         List<Map<String, Integer>> dataList = new ArrayList<>();
 
-        String userData = userService.userTotalDonutes(String.valueOf(params.getPhonenumber()));
+        String userData = userService.userTotalDonuts(String.valueOf(params.getPhonenumber()));
         String trashname = "can,gen,pet";
         String[] splitData = userData.split(",");
         String[] splitData1 = trashname.split(",");
