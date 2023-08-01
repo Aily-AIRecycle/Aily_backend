@@ -30,6 +30,8 @@ public class  UserController {
     private static final String IMAGE_DIRECTORY = "/home/lee/image/";
 
 
+
+
     //회원탈퇴 and redirect
     @RequestMapping("/member/leavuser")
     public void leaveuser(@RequestBody UserDTO userDTO, HttpServletResponse response) throws IOException {
@@ -131,9 +133,7 @@ public class  UserController {
     public ResponseEntity<String> auth(@RequestBody AuthRequest request) throws Exception {
         String email = request.getEmail();
         System.out.println("요청한 Email = " + email + " 생성된 코드 = " + request.getCode());
-
         mailService.sendMail(email, "[Aily] 이메일 인증 코드 안내", request.getCode());
-
         return ResponseEntity.ok(request.getCode());
     }
 

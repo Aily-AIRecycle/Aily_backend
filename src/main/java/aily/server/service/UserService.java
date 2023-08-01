@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 import aily.server.DTO.UserDTO;
 import aily.server.entity.User;
 import aily.server.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 
 @Service
@@ -34,6 +36,17 @@ public class UserService {
 //        userRepository.save(user);
 //    }
 
+    @Transactional
+    public void userupdateinformation(User user, String number){
+        userRepository.updateUserEmail(user.getEmail(), number);
+        userRepository.updateMyPageNickname(user.getMyPage().getNickname(), number);
+    }
+
+    //회원 내정보 수정 데이터 조회
+    public Optional<User> finduserinformation(String phonenumber){
+        return userRepository.findByPhoneNumber(phonenumber);
+    }
+
     //회원탈퇴
     public void deleteuser(User user){
         userRepository.delete(user);
@@ -47,16 +60,18 @@ public class UserService {
         }
     }
 
+    //개인 쓰레기 데이터 조회
     public String userTotalDonutes(String phonenumber){
        return myPageRepository.finduserTotalDonut(phonenumber);
     }
 
-
+    //회원 핸드폰 번호를 이용한 닉네임 조회
     public String userPhonenumberbyNickname(String phonenumber){
         System.out.println("userPhonenumber" + phonenumber);
         return userRepository.findNameByPhonenumber(phonenumber);
     }
 
+    //회원 닉네임을 이용한 휴대폰 번호 조회
     public String userPhonenumber(String phonenumber){
         System.out.println("userPhonenumber" + phonenumber);
         return userRepository.findPhoneNumberByNickname(phonenumber);
@@ -239,7 +254,7 @@ public class UserService {
         }
     }
 
-    //비회원이 회원가입시 폴더,json파일 이름 변경
+    //비회원이 회원가입시 or 회원정보 수정 시 폴더,json파일 이름 변경
     public void renameFileFolder(String id, String oldid){
         File oldFolder = new File(IMAGE_DIRECTORY + oldid );
         File newFolder = new File(IMAGE_DIRECTORY + id);

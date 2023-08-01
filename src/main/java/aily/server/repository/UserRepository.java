@@ -1,18 +1,30 @@
 package aily.server.repository;
 
 import aily.server.entity.User;
-import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository <User, Long>{
+
+    @Query(value = "SELECT u FROM MyPage m JOIN User u ON m.user = u.phonenumber where u.phonenumber = :pnumber")
+    Optional<User> findByPhoneNumber(String pnumber);
+
+    @Modifying
+    @Query(value = "UPDATE User u SET u.email = :email WHERE u.phonenumber = :phonenumber")
+    void updateUserEmail(String email, String phonenumber);
+
+    @Modifying
+    @Query(value = "UPDATE MyPage m SET m.nickname = :nickname WHERE m.user.phonenumber = :phonenumber")
+    void updateMyPageNickname(String nickname, String phonenumber);
 
     @Query(value = "SELECT true FROM User u where u.password = :password")
     boolean findUserPassword(String password);

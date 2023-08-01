@@ -1,6 +1,8 @@
 package aily.server.controller;
 
+import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
+import aily.server.entity.User;
 import aily.server.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -14,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +25,27 @@ public class MyPageController{
 
 
     public final UserService userService;
+
+
+    //내 정보 페이지 표시
+    @PostMapping("/member/UIS")
+    public Optional<User> userinformationshow(@RequestBody UserDTO userDTO){
+        return userService.finduserinformation(userDTO.getPhonenumber());
+    }
+
+
+    //회원수정 ( 미완성 )
+    @PostMapping("/member/UIC")
+    public User userinformationcheck(@RequestBody UserDTO userDTO){
+        User user = User.saveToEntity(userDTO);
+        MyPageDTO myPageDTO;
+        myPageDTO = userService.getupdatemypage(userDTO.getPhonenumber());
+        userService.renameFileFolder(user.getMyPage().getNickname(),myPageDTO.getNickname());
+        userService.userupdateinformation(user,userDTO.getPhonenumber());
+
+        return null;
+    }
+
 
     //리액트에서 마이이페이지로 데이터 전송
     @RequestMapping(value = "/member/mypage", method={RequestMethod.GET, RequestMethod.POST})

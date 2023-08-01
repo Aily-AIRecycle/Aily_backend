@@ -1,5 +1,6 @@
 package aily.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -31,6 +32,7 @@ public class MyPage {
     private int CAN;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "phonenumber", referencedColumnName = "phone_number")
     private User user;
 }

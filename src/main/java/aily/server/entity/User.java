@@ -1,6 +1,7 @@
 package aily.server.entity;
 
 import aily.server.DTO.UserDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class User {
     private String gender;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+
     private MyPage myPage;
 
     public static User saveToEntity(UserDTO userDTO) {
