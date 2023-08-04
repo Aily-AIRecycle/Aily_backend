@@ -31,7 +31,6 @@ public class User {
     private String gender;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-
     private MyPage myPage;
 
     public static User saveToEntity(UserDTO userDTO) {

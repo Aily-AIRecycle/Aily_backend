@@ -8,11 +8,13 @@ import aily.server.service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.simple.JSONObject;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,11 +32,10 @@ public class PointController {
     private static final String JSON_FILE = "/home/lee/image/";
     int number = 0;
     @PostMapping("/member/point")
-    public ResponseEntity<String> savePoint(@RequestBody UserDTO userDTO) throws IOException {
+    public ResponseEntity<List<Map<String, Object>>> savePoint(@RequestBody UserDTO userDTO) throws IOException {
         User user;
         User newuser;
         String name;
-
         System.out.println("point" + userService.test(userDTO.getPhonenumber()));
         if(!userService.test(userDTO.getPhonenumber()).equals("NFT")) {
             name = userService.userPhonenumberbyNickname(userDTO.getPhonenumber());
@@ -61,7 +62,7 @@ public class PointController {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Map<String, Object>> data = new ArrayList<>();
         if (file.length() > 0) {
-            data = objectMapper.readValue(file, new TypeReference<List<Map<String, Object>>>() {});
+            data = objectMapper.readValue(file, new TypeReference<>() {});
         }
         Map<String, Object> newDate = new HashMap<>();
         SimpleDateFormat newnow = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -81,11 +82,7 @@ public class PointController {
 
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
 
-
-        return ResponseEntity.ok("PointSave");
+        return ResponseEntity.ok().body(data);
     }
-
-
-
 
 }

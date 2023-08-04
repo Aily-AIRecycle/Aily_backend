@@ -30,8 +30,6 @@ public class  UserController {
     private static final String IMAGE_DIRECTORY = "/home/lee/image/";
 
 
-
-
     //회원탈퇴 and redirect
     @RequestMapping("/member/leavuser")
     public void leaveuser(@RequestBody UserDTO userDTO, HttpServletResponse response) throws IOException {

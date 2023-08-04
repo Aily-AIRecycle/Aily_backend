@@ -15,6 +15,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository <User, Long>{
 
+    @Query(value = "SELECT m.profile FROM MyPage m JOIN User u ON m.user = u.phonenumber where u.phonenumber = :phonenumber")
+    String finduserprofile(String phonenumber);
+
     @Query(value = "SELECT u FROM MyPage m JOIN User u ON m.user = u.phonenumber where u.phonenumber = :pnumber")
     Optional<User> findByPhoneNumber(String pnumber);
 
@@ -25,6 +28,10 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Modifying
     @Query(value = "UPDATE MyPage m SET m.nickname = :nickname WHERE m.user.phonenumber = :phonenumber")
     void updateMyPageNickname(String nickname, String phonenumber);
+
+    @Modifying
+    @Query(value = "UPDATE MyPage m SET m.profile = :profile WHERE m.user.phonenumber = :phonenumber")
+    void updateMyPageProfile(String profile, String phonenumber);
 
     @Query(value = "SELECT true FROM User u where u.password = :password")
     boolean findUserPassword(String password);

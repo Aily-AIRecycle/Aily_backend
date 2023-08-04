@@ -30,16 +30,19 @@ public class UserService {
     private static final String sourceFilePath = "/home/lee/image/default/image.png";
 
 
-    //테스트
-//    public void imageUp(User user){
-//        System.out.println(user.getMyPage().getProfile());
-//        userRepository.save(user);
-//    }
+    //유저의 프로필사진 표시
+    public String userimageshow(String phonenumber){
+        String data = userRepository.finduserprofile(phonenumber);
+        return data;
+
+    }
 
     @Transactional
     public void userupdateinformation(User user, String number){
+        System.out.println(user.getMyPage().getNickname());
         userRepository.updateUserEmail(user.getEmail(), number);
         userRepository.updateMyPageNickname(user.getMyPage().getNickname(), number);
+        userRepository.updateMyPageProfile(user.getMyPage().getProfile(), number);
     }
 
     //회원 내정보 수정 데이터 조회

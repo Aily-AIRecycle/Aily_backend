@@ -1,5 +1,8 @@
 package aily.server.controller;
 
+import aily.server.DTO.UserDTO;
+import aily.server.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +15,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
+@RequiredArgsConstructor
 public class ImageController {
-
+    public final UserService userService;
     private static final String IMAGE_DIRECTORY = "/home/lee/image/";
 
         //유저 image 확인
@@ -32,11 +36,13 @@ public class ImageController {
     
     //유저 프로필사진 변경 url 경로
     @PostMapping("/member/upload/{userid}")
-    public String handleFileUpload(@PathVariable("userid") String id,@RequestParam("image") MultipartFile file) throws IOException {
+    public String handleFileUpload(@PathVariable("userid") String id,@RequestPart(value="image",required = false) MultipartFile file) throws IOException {
+        System.out.println("============이미지 메소드 실행==============");
         if (file.isEmpty()) {
             // 파일이 없는 경우 처리
             return "redirect:/upload?error=empty";
         }
+
             System.out.println(id);
             // 저장할 디렉토리 경로
             Path uploadDir = Path.of(IMAGE_DIRECTORY + id);
@@ -62,4 +68,11 @@ public class ImageController {
 
     }
 
+    @PostMapping("/member/userimage")
+    public ResponseEntity<String> userimageshow(@RequestBody UserDTO userDTO){
+            userService.userimageshow(userDTO.getPhonenumber());
+            String dd = userService.userimageshow(userDTO.getPhonenumber());
+            System.out.println(dd);
+            return ResponseEntity.ok().body(dd);
+    }
 }
