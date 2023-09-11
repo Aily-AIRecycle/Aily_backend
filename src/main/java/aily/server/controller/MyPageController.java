@@ -37,7 +37,7 @@ public class MyPageController{
     //회원수정 ( 이메일 인증제외 전부 완성 )
     @PostMapping("/member/UIC")
     public User userinformationcheck(@RequestBody UserDTO userDTO){
-        userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + "/image.png");
+        userDTO.setProfile("https://ailymit.store/member/image/" + userDTO.getNickname() + "/image.png");
         User user = User.saveToEntity(userDTO);
         MyPageDTO myPageDTO;
         myPageDTO = userService.getupdatemypage(userDTO.getPhonenumber());

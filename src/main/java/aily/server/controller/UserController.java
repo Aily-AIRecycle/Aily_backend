@@ -3,19 +3,14 @@ package aily.server.controller;
 import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
 import aily.server.authEmail.AuthRequest;
-import aily.server.entity.MyPage;
 import aily.server.entity.User;
 import aily.server.service.MailService;
 import aily.server.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.result.view.RedirectView;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,7 +83,7 @@ public class  UserController {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
 
         if(userService.test(userDTO.getPhonenumber()).equals("NFT")) {
-            userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + "/image.png");
+            userDTO.setProfile("https://ailymit.store/member/image/" + userDTO.getNickname() + "/image.png");
             User user = User.saveToEntity(userDTO);
             userService.getImage(userDTO.getNickname());
             System.out.println("회원 아님");
@@ -101,7 +96,7 @@ public class  UserController {
             userDTO.setPET(upuser.getPET());
             userDTO.setPoint(upuser.getPoint());
             userDTO.setNickname(userDTO.getNickname());
-            userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + ".png");
+            userDTO.setProfile("https://ailymit.store/member/image/" + userDTO.getNickname() + ".png");
             User user = User.saveToEntity(userDTO);
             System.out.println("회원임");
             userService.delUser(user);
