@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Query(value = "SELECT m.profile FROM MyPage m JOIN User u ON m.user = u.phonenumber where u.phonenumber = :phonenumber")
     String finduserprofile(String phonenumber);
 
-    @Query(value = "SELECT u FROM MyPage m JOIN User u ON m.user = u.phonenumber where u.phonenumber = :pnumber")
+    @Query(value = "SELECT u,m FROM User u JOIN u.myPage m ON u.phonenumber = :pnumber")
     Optional<User> findByPhoneNumber(String pnumber);
 
     @Modifying

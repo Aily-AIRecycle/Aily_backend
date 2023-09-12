@@ -74,12 +74,6 @@ public class UserService {
         return userRepository.findNameByPhonenumber(phonenumber);
     }
 
-    //회원 닉네임을 이용한 휴대폰 번호 조회
-    public String userPhonenumber(String phonenumber){
-        System.out.println("userPhonenumber" + phonenumber);
-        return userRepository.findPhoneNumberByNickname(phonenumber);
-    }
-
 
     public void signUp(User user) {
         userRepository.save(user);
