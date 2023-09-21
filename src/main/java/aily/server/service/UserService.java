@@ -258,9 +258,14 @@ public class UserService {
 
         File oldFile = new File(IMAGE_DIRECTORY + id + "/" + oldid + ".json" );
         File newFile = new File(IMAGE_DIRECTORY + id+ "/" + id + ".json");
-
+        System.out.println("전 이름 :: " + oldid);
+        System.out.println("후 이름 :: " + id);
+        boolean deleteFile = oldFile.delete();
+        boolean deleteFolder = oldFolder.delete();
         boolean Folderresult = oldFolder.renameTo(newFolder);
         boolean Fileresult = oldFile.renameTo(newFile);
+        System.out.println("삭제 폴더 : " + deleteFolder);
+        System.out.println("삭제 파일 : " + deleteFile);
         System.out.println("파일 이름 변경 : " + Fileresult);
         System.out.println("폴더 이름 변경 : " + Folderresult);
 

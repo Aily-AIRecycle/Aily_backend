@@ -76,10 +76,12 @@ public class  UserController {
         return directory.delete();
     }
 
+    //-----------------------------------------------
     //회원가입, 비회원으로 포인트 적립후, 회원가입시 기존 정보 삭제( MyPaeg 정보 옮기고)
     //사용자 폴더,파일 이름 변경
-    @PostMapping("/member/join")
-    public ResponseEntity<String> save (@RequestBody UserDTO userDTO) throws IOException {
+    //비회원일떄 회원가입
+    @PostMapping("/member/join1")
+    public ResponseEntity<String> save1 (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
 
         if(userService.test(userDTO.getPhonenumber()).equals("NFT")) {
@@ -88,7 +90,15 @@ public class  UserController {
             userService.getImage(userDTO.getNickname());
             System.out.println("회원 아님");
             userService.signUp(user);
-        }else{
+        }
+        return ResponseEntity.ok("회원가입 완료!");
+    }
+    //임시회원일떄 회원가입
+    @PostMapping("/member/join2")
+    public ResponseEntity<String> save2 (@RequestBody UserDTO userDTO) throws IOException {
+        //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
+
+        if(!userService.test(userDTO.getPhonenumber()).equals("NFT")){
             MyPageDTO upuser;
             upuser = userService.getupdatemypage(userDTO.getPhonenumber());
             userDTO.setCAN(upuser.getCAN());
@@ -104,8 +114,8 @@ public class  UserController {
             userService.renameFileFolder(userDTO.getNickname(), upuser.getNickname());
         }
         return ResponseEntity.ok("회원가입 완료!");
-
     }
+    //-----------------------------------------------
 
     @PostMapping("/member/login")
     public ResponseEntity<UserDTO> loginRe (@RequestBody UserDTO params) {

@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Query(value = "SELECT u,m FROM User u JOIN u.myPage m ON u.phonenumber = :pnumber")
     Optional<User> findByPhoneNumber(String pnumber);
 
+//----------------------------------------------------------------------
     @Modifying
     @Query(value = "UPDATE User u SET u.email = :email WHERE u.phonenumber = :phonenumber")
     void updateUserEmail(String email, String phonenumber);
@@ -32,6 +33,7 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Modifying
     @Query(value = "UPDATE MyPage m SET m.profile = :profile WHERE m.user.phonenumber = :phonenumber")
     void updateMyPageProfile(String profile, String phonenumber);
+//----------------------------------------------------------------------
 
     @Query(value = "SELECT true FROM User u where u.password = :password")
     boolean findUserPassword(String password);
@@ -39,9 +41,6 @@ public interface UserRepository extends JpaRepository <User, Long>{
     Optional<User> findByEmail(String email);
 
     Optional<User> findUserByPhonenumber(String phone);
-
-    @Query(value = "SELECT u.phonenumber FROM MyPage m JOIN User u ON m.user = u.phonenumber WHERE m.nickname = :nickname")
-    String findPhoneNumberByNickname(String nickname);
 
     @Query(value = "SELECT u.myPage.nickname FROM MyPage m JOIN User u ON m.user = u.phonenumber WHERE u.phonenumber = :phonenumber")
     String findNameByPhonenumber(String phonenumber);

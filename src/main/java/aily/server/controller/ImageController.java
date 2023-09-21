@@ -49,8 +49,6 @@ public class ImageController {
             // 파일이 없는 경우 처리
             return "redirect:/upload?error=empty";
         }
-
-        System.out.println(id);
         // 저장할 디렉토리 경로
         Path uploadDir = Path.of(IMAGE_DIRECTORY + id);
 
