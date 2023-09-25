@@ -80,7 +80,7 @@ public class  UserController {
     //회원가입, 비회원으로 포인트 적립후, 회원가입시 기존 정보 삭제( MyPaeg 정보 옮기고)
     //사용자 폴더,파일 이름 변경
     //비회원일떄 회원가입
-    @PostMapping("/member/join1")
+    @PostMapping("/member/join")
     public ResponseEntity<String> save1 (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
 
@@ -94,7 +94,7 @@ public class  UserController {
         return ResponseEntity.ok("회원가입 완료!");
     }
     //임시회원일떄 회원가입
-    @PostMapping("/member/join2")
+    @PostMapping("/member/guestjoin")
     public ResponseEntity<String> save2 (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
 
@@ -115,7 +115,6 @@ public class  UserController {
         }
         return ResponseEntity.ok("회원가입 완료!");
     }
-    //-----------------------------------------------
 
     @PostMapping("/member/login")
     public ResponseEntity<UserDTO> loginRe (@RequestBody UserDTO params) {
