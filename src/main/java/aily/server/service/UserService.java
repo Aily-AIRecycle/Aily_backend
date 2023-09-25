@@ -34,6 +34,20 @@ public class UserService {
     public String userimageshow(String phonenumber){
         String data = userRepository.finduserprofile(phonenumber);
         return data;
+
+    }
+
+    @Transactional
+    public void userupdateinformation(User user, String number){
+        System.out.println(user.getMyPage().getNickname());
+        userRepository.updateUserEmail(user.getEmail(), number);
+        userRepository.updateMyPageNickname(user.getMyPage().getNickname(), number);
+        userRepository.updateMyPageProfile(user.getMyPage().getProfile(), number);
+    }
+
+    //회원 내정보 수정 데이터 조회
+    public Optional<User> finduserinformation(String phonenumber){
+        return userRepository.findByPhoneNumber(phonenumber);
     }
 
     //회원탈퇴
@@ -47,6 +61,11 @@ public class UserService {
         }else {
             return "no";
         }
+    }
+
+    //개인 쓰레기 데이터 조회
+    public String userTotalDonutes(String phonenumber){
+       return myPageRepository.finduserTotalDonut(phonenumber);
     }
 
     //회원 핸드폰 번호를 이용한 닉네임 조회
@@ -251,5 +270,4 @@ public class UserService {
         System.out.println("폴더 이름 변경 : " + Folderresult);
 
     }
-
 }

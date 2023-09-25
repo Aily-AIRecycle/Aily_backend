@@ -3,7 +3,6 @@ package aily.server.controller;
 import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
 import aily.server.entity.User;
-import aily.server.service.MypageService;
 import aily.server.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,7 +25,6 @@ public class MyPageController{
 
 
     public final UserService userService;
-    public final MypageService mypageService;
 
     //회원수정 ( 이메일 인증제외 전부 완성 )
     @PostMapping("/member/UIC")
@@ -36,7 +34,7 @@ public class MyPageController{
         MyPageDTO myPageDTO;
         myPageDTO = userService.getupdatemypage(userDTO.getPhonenumber());
         userService.renameFileFolder(user.getMyPage().getNickname(),myPageDTO.getNickname());
-        mypageService.userupdateinformation(user,userDTO.getPhonenumber());
+        userService.userupdateinformation(user,userDTO.getPhonenumber());
         return null;
     }
 
@@ -44,8 +42,8 @@ public class MyPageController{
     //내 정보 페이지 표시
     @PostMapping("/member/UIS")
     public Optional<User> userinformationshow(@RequestBody UserDTO userDTO){
-        System.out.println("UIS ::::::: " + mypageService.finduserinformation(userDTO.getPhonenumber()));
-        return mypageService.finduserinformation(userDTO.getPhonenumber());
+        System.out.println("UIS ::::::: " + userService.finduserinformation(userDTO.getPhonenumber()));
+        return userService.finduserinformation(userDTO.getPhonenumber());
     }
 
 
@@ -70,7 +68,7 @@ public class MyPageController{
     public List<Map<String, Integer>> TotalDonutChart(@RequestBody UserDTO params) {
         List<Map<String, Integer>> dataList = new ArrayList<>();
 
-        String userData = mypageService.userTotalDonutes(String.valueOf(params.getPhonenumber()));
+        String userData = userService.userTotalDonutes(String.valueOf(params.getPhonenumber()));
         String trashname = "can,gen,pet";
         String[] splitData = userData.split(",");
         String[] splitData1 = trashname.split(",");
