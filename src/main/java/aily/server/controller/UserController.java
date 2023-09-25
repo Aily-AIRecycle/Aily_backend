@@ -1,17 +1,18 @@
 package aily.server.controller;
 
+import aily.server.DTO.MyPageDTO;
 import aily.server.DTO.UserDTO;
 import aily.server.authEmail.AuthRequest;
-import aily.server.entity.MyPage;
 import aily.server.entity.User;
 import aily.server.service.MailService;
 import aily.server.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,43 +22,100 @@ import java.util.Map;
 public class  UserController {
     public final UserService userService;
     public final MailService mailService;
+    private static final String IMAGE_DIRECTORY = "/home/lee/image/";
 
 
-    @RequestMapping (value = "/member/mypage", method={RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<String> postmypage(@RequestBody UserDTO userDTO) throws JsonProcessingException {
-        String phonenumber = userService.userPhonenumber(userDTO.getNickname());
-        System.out.println(phonenumber);
-        String data = userService.test(phonenumber);
-        System.out.println("post" +userDTO.getNickname());
+    //회원탈퇴 and redirect
+    @RequestMapping("/member/leavuser")
+    public void leaveuser(@RequestBody UserDTO userDTO, HttpServletResponse response) throws IOException {
+        Map<String, String> ee = new HashMap<>();
+        System.out.println(userDTO.getPassword());
+        User user1 = User.saveToEntity(userDTO);
+        try{
+            if (!userService.test(userDTO.getPhonenumber()).equals("NFT") & userService.findpassworduser(user1).equals("yes")) {
 
-        String[] fields = data.substring(data.indexOf("(") + 1, data.indexOf(")")).split(", ");
-        Map<String, Object> result = new HashMap<>();
-        for (String field : fields) {
-            String[] keyValue = field.split("=");
-            String key = keyValue[0];
-            String value = keyValue[1];
-            result.put(key, value);
+                System.out.println(userService.test(userDTO.getPhonenumber()));
+                User user = User.saveToEntity(userDTO);
+                userService.deleteuser(user);
+                String directoryPath = IMAGE_DIRECTORY + userDTO.getNickname();
+
+                File directory = new File(directoryPath);
+                if (directory.exists() && directory.isDirectory()) {
+                    boolean deletionSuccess = deleteDirectory(directory);
+
+                    if (deletionSuccess)  {
+                        ee.put("result", "deleteuserok");
+                    } else {
+                        ee.put("result", "file error.vo1");
+                    }
+                } else {
+                    ee.put("result", "file error.vo2");
+                }
+            }
+        }catch (ClassCastException e){
+            ee.put("result", "usererror");
+        }
+            String jsonResponse = new ObjectMapper().writeValueAsString(ee);
+            response.setContentType("application/json");
+            response.getWriter().write(jsonResponse);
+            response.getWriter().flush();
         }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonData = objectMapper.writeValueAsString(result);
-        return ResponseEntity.ok(jsonData);
+    //회원 관련 개인 폴더 삭제
+    private static boolean deleteDirectory(File directory) {
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (!deleteDirectory(file)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return directory.delete();
     }
 
-
-    @PostMapping("/member/join")
-    public ResponseEntity<String> save (@RequestBody UserDTO userDTO) throws IOException {
+    //-----------------------------------------------
+    //회원가입, 비회원으로 포인트 적립후, 회원가입시 기존 정보 삭제( MyPaeg 정보 옮기고)
+    //사용자 폴더,파일 이름 변경
+    //비회원일떄 회원가입
+    @PostMapping("/member/join1")
+    public ResponseEntity<String> save1 (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
 
-        userDTO.setProfile("http://localhost:8072/member/image/" + userDTO.getNickname() + ".png");
-        User user = User.saveToEntity(userDTO);
-        userService.getImage(userDTO.getNickname());
-        System.out.println("Nickname :: " + userDTO.getNickname());
-        userService.signUp(user);
-
+        if(userService.test(userDTO.getPhonenumber()).equals("NFT")) {
+            userDTO.setProfile("https://ailymit.store/member/image/" + userDTO.getNickname() + "/image.png");
+            User user = User.saveToEntity(userDTO);
+            userService.getImage(userDTO.getNickname());
+            System.out.println("회원 아님");
+            userService.signUp(user);
+        }
         return ResponseEntity.ok("회원가입 완료!");
-
     }
+    //임시회원일떄 회원가입
+    @PostMapping("/member/join2")
+    public ResponseEntity<String> save2 (@RequestBody UserDTO userDTO) throws IOException {
+        //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
+
+        if(!userService.test(userDTO.getPhonenumber()).equals("NFT")){
+            MyPageDTO upuser;
+            upuser = userService.getupdatemypage(userDTO.getPhonenumber());
+            userDTO.setCAN(upuser.getCAN());
+            userDTO.setGEN(upuser.getGEN());
+            userDTO.setPET(upuser.getPET());
+            userDTO.setPoint(upuser.getPoint());
+            userDTO.setNickname(userDTO.getNickname());
+            userDTO.setProfile("https://ailymit.store/member/image/" + userDTO.getNickname() + ".png");
+            User user = User.saveToEntity(userDTO);
+            System.out.println("회원임");
+            userService.delUser(user);
+            userService.signUp(user);
+            userService.renameFileFolder(userDTO.getNickname(), upuser.getNickname());
+        }
+        return ResponseEntity.ok("회원가입 완료!");
+    }
+    //-----------------------------------------------
 
     @PostMapping("/member/login")
     public ResponseEntity<UserDTO> loginRe (@RequestBody UserDTO params) {
@@ -66,10 +124,7 @@ public class  UserController {
         return ResponseEntity.ok(loginResult);
     }
 
-//    @GetMapping("/member/{phone}")
-//    public String mypage (@PathVariable String phone) {
-//        return userService.test(phone);
-//    }
+
 
     @PostMapping("/member/EmailCheck")
     public String emailCheck (@RequestBody UserDTO userDTO) {
@@ -81,9 +136,7 @@ public class  UserController {
     public ResponseEntity<String> auth(@RequestBody AuthRequest request) throws Exception {
         String email = request.getEmail();
         System.out.println("요청한 Email = " + email + " 생성된 코드 = " + request.getCode());
-
         mailService.sendMail(email, "[Aily] 이메일 인증 코드 안내", request.getCode());
-
         return ResponseEntity.ok(request.getCode());
     }
 

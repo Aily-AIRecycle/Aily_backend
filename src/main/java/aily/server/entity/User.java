@@ -1,6 +1,7 @@
 package aily.server.entity;
 
 import aily.server.DTO.UserDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

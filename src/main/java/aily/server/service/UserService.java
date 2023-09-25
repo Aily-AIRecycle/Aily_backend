@@ -11,15 +11,14 @@ import org.springframework.stereotype.Service;
 import aily.server.DTO.UserDTO;
 import aily.server.entity.User;
 import aily.server.repository.UserRepository;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 
 @Service
@@ -29,15 +28,50 @@ public class UserService {
     private final MyPageRepository myPageRepository;
     private static final String IMAGE_DIRECTORY = "/home/lee/image/";
     private static final String sourceFilePath = "/home/lee/image/default/image.png";
-    //테스트
-//    public void imageUp(User user){
-//        System.out.println(user.getMyPage().getProfile());
-//        userRepository.save(user);
-//    }
 
-    public String userPhonenumber(String phonenumber){
+
+    //유저의 프로필사진 표시
+    public String userimageshow(String phonenumber){
+        String data = userRepository.finduserprofile(phonenumber);
+        return data;
+
+    }
+
+    @Transactional
+    public void userupdateinformation(User user, String number){
+        System.out.println(user.getMyPage().getNickname());
+        userRepository.updateUserEmail(user.getEmail(), number);
+        userRepository.updateMyPageNickname(user.getMyPage().getNickname(), number);
+        userRepository.updateMyPageProfile(user.getMyPage().getProfile(), number);
+    }
+
+    //회원 내정보 수정 데이터 조회
+    public Optional<User> finduserinformation(String phonenumber){
+        return userRepository.findByPhoneNumber(phonenumber);
+    }
+
+    //회원탈퇴
+    public void deleteuser(User user){
+        userRepository.delete(user);
+    }
+
+    public String findpassworduser(User user){
+        if(userRepository.findUserPassword(user.getPassword())){
+            return "yes";
+        }else {
+            return "no";
+        }
+    }
+
+    //개인 쓰레기 데이터 조회
+    public String userTotalDonutes(String phonenumber){
+       return myPageRepository.finduserTotalDonut(phonenumber);
+    }
+
+    //회원 핸드폰 번호를 이용한 닉네임 조회
+    public String userPhonenumberbyNickname(String phonenumber){
         System.out.println("userPhonenumber" + phonenumber);
-        return userRepository.findPhoneNumberByNickname(phonenumber);
+        return userRepository.findNameByPhonenumber(phonenumber);
     }
 
 
@@ -51,8 +85,8 @@ public class UserService {
             UserDTO userDTO = UserDTO.toUserDTO(user.get());
             String dbPass = userDTO.getPassword();
             String inputPass = params.getPassword();
-//            System.out.println("db = " + dbPass);
-//            System.out.println("input = " + inputPass);
+            System.out.println("db = " + dbPass);
+            System.out.println("input = " + inputPass);
             if(dbPass.equals(inputPass)){
                 //all_ok
                 userDTO.setPassword("");
@@ -78,6 +112,23 @@ public class UserService {
             return "NFT";
         }
     }
+
+    public String delUser(User user){
+        userRepository.delete(user);
+        return user.getMyPage().getNickname() + "삭제";
+    }
+
+    public MyPageDTO getupdatemypage(String phone) {
+        Optional<User> user = userRepository.findUserByPhonenumber(phone);
+        if(user.isPresent()){
+            MyPageDTO myPageDTO = MyPageDTO.toMyPageDTO(user.get().getMyPage());
+            return myPageDTO;
+        }
+        System.out.println("시스템오류");
+        return null;
+    }
+
+
 
     public String checkEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
@@ -139,7 +190,10 @@ public class UserService {
             File sourceFile = new File(sourceFilePath);
             File destinationFile = new File(imagePath);
 
+
+
             createImageFile(id);
+            createJsonFile(id);
 
             copyFile(sourceFile, destinationFile);
 
@@ -163,6 +217,27 @@ public class UserService {
         }
     }
 
+    //회원 가입시 JSON파일 생성
+    private void createJsonFile(String id) throws IOException {
+        String path = IMAGE_DIRECTORY + id;
+        File f2 = new File(path, id+".json");
+
+        if (!f2.exists()) {    // 파일이 존재하지 않으면 생성
+            try {
+                if (f2.createNewFile())
+                    System.out.println("파일 생성 성공");
+                else
+                    System.out.println("파일 생성 실패");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {    // 파일이 존재한다면
+            System.out.println("파일이 이미 존재합니다.");
+        }
+        System.out.println();
+
+    }
+
     //default 이미지 파일 복사
     private static void copyFile(File source, File destination) throws IOException {
         try (InputStream inputStream = new FileInputStream(source);
@@ -174,5 +249,25 @@ public class UserService {
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
+    }
+
+    //비회원이 회원가입시 or 회원정보 수정 시 폴더,json파일 이름 변경
+    public void renameFileFolder(String id, String oldid){
+        File oldFolder = new File(IMAGE_DIRECTORY + oldid );
+        File newFolder = new File(IMAGE_DIRECTORY + id);
+
+        File oldFile = new File(IMAGE_DIRECTORY + id + "/" + oldid + ".json" );
+        File newFile = new File(IMAGE_DIRECTORY + id+ "/" + id + ".json");
+        System.out.println("전 이름 :: " + oldid);
+        System.out.println("후 이름 :: " + id);
+        boolean deleteFile = oldFile.delete();
+        boolean deleteFolder = oldFolder.delete();
+        boolean Folderresult = oldFolder.renameTo(newFolder);
+        boolean Fileresult = oldFile.renameTo(newFile);
+        System.out.println("삭제 폴더 : " + deleteFolder);
+        System.out.println("삭제 파일 : " + deleteFile);
+        System.out.println("파일 이름 변경 : " + Fileresult);
+        System.out.println("폴더 이름 변경 : " + Folderresult);
+
     }
 }

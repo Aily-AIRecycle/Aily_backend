@@ -11,6 +11,35 @@ import org.springframework.stereotype.Component;
 @Component
 public class SignControllAspect {
 
+    @Before("execution(* aily.server.service.*Service.findpassworduser(..))")
+    public void finduserpassword(JoinPoint jp) throws Exception {
+        //System.out.println("aop실행됨");
+        Object[] args= jp.getArgs();
+        //System.out.println("jp = " + jp.getArgs());
+        User m= (User)args[0];// Member의 주소가 들어감
+        String password=m.getPassword();
+        //System.out.println("암호화 전 PW:"+password);
+        String encPw = SHA256Util.encData(password);
+        //System.out.println("암호화 된 PW:"+encPw);
+        m.setPassword(encPw);
+    }
+
+
+    @Before("execution(* aily.server.service.*Service.deleteuser(..))")
+    public void beforedeleteuser(JoinPoint jp) throws Exception {
+        //System.out.println("aop실행됨");
+        Object[] args= jp.getArgs();
+        //System.out.println("jp = " + jp.getArgs());
+        User m= (User)args[0];// Member의 주소가 들어감
+        String password=m.getPassword();
+        //System.out.println("암호화 전 PW:"+password);
+        String encPw = SHA256Util.encData(password);
+        //System.out.println("암호화 된 PW:"+encPw);
+        m.setPassword(encPw);
+    }
+
+
+
     @Before("execution(* aily.server.service.*Service.signUp(..))")
     public void beforeAdvice(JoinPoint jp) throws Exception {
         //System.out.println("aop실행됨");
