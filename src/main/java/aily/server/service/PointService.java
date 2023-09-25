@@ -13,7 +13,4 @@ public class PointService {
         userRepository.savePoint(user);
         System.out.println("Service : " + user.getMyPage().getCAN());
     }
-
-
-
 }

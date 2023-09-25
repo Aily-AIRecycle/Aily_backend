@@ -17,14 +17,17 @@ public interface UserRepository extends JpaRepository <User, Long>{
 
     @Query(value = "SELECT m.profile FROM MyPage m JOIN User u ON m.user = u.phonenumber where u.phonenumber = :phonenumber")
     String finduserprofile(String phonenumber);
+    //mypageRepo에서 profile가져올때 fk인 phonenumber사용하기
 
     @Query(value = "SELECT u,m FROM User u JOIN u.myPage m ON u.phonenumber = :pnumber")
     Optional<User> findByPhoneNumber(String pnumber);
+    //
 
 //----------------------------------------------------------------------
     @Modifying
     @Query(value = "UPDATE User u SET u.email = :email WHERE u.phonenumber = :phonenumber")
     void updateUserEmail(String email, String phonenumber);
+    //
 
     @Modifying
     @Query(value = "UPDATE MyPage m SET m.nickname = :nickname WHERE m.user.phonenumber = :phonenumber")
