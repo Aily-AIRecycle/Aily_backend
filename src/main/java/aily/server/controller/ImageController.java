@@ -20,7 +20,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class ImageController {
     public final UserService userService;
-    private static final String IMAGE_DIRECTORY = "/home/lee/image/";
+    private static final String IMAGE_DIRECTORY = "/home/ubuntu/image/";
 
     //유저 image 확인
     @GetMapping(value = "image/{userid}/image.png", produces = MediaType.IMAGE_JPEG_VALUE)

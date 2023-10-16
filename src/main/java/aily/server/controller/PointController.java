@@ -22,7 +22,7 @@ public class PointController {
     private final PointService pointService;
     private final UserService userService;
 
-    private static final String JSON_FILE = "/home/lee/image/";
+    private static final String JSON_FILE = "/home/ubuntu/image/";
     int number = 0;
     @PostMapping("/member/point")
     public ResponseEntity<List<Map<String, Object>>> savePoint(@RequestBody UserDTO userDTO) throws IOException {
