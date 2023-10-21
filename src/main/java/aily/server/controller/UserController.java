@@ -124,8 +124,6 @@ public class  UserController {
         return ResponseEntity.ok(loginResult);
     }
 
-
-
     @PostMapping("/member/EmailCheck")
     public String emailCheck (@RequestBody UserDTO userDTO) {
         System.out.println("email = " + userDTO.getEmail());
