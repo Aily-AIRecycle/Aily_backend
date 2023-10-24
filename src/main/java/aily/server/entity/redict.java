@@ -17,7 +17,7 @@ public class redict {
     private Long id;
 
     @Column(name = "number")
-    private int number;
+    private String number;
 
     @Column(name = "name",length = 300)
     private String title;

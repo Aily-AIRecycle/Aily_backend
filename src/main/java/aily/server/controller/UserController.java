@@ -22,7 +22,7 @@ import java.util.Map;
 public class  UserController {
     public final UserService userService;
     public final MailService mailService;
-    private static final String IMAGE_DIRECTORY = "/home/lee/image/";
+    private static final String IMAGE_DIRECTORY = "/home/ubuntu/image/";
 
 
     //회원탈퇴 and redirect
@@ -123,8 +123,6 @@ public class  UserController {
         System.out.println("loginResult = " + loginResult);
         return ResponseEntity.ok(loginResult);
     }
-
-
 
     @PostMapping("/member/EmailCheck")
     public String emailCheck (@RequestBody UserDTO userDTO) {

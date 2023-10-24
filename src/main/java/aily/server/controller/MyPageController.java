@@ -21,7 +21,7 @@ import java.util.*;
 @RestController
 @RequiredArgsConstructor
 public class MyPageController{
-    private static final String JSON_FILE = "/home/lee/image/";
+    private static final String JSON_FILE = "/home/ubuntu/image/";
 
 
     public final UserService userService;

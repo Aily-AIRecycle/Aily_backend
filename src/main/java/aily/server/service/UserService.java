@@ -190,8 +190,6 @@ public class UserService {
             File sourceFile = new File(sourceFilePath);
             File destinationFile = new File(imagePath);
 
-
-
             createImageFile(id);
             createJsonFile(id);
 

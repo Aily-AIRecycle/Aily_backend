@@ -18,9 +18,9 @@ public class MyPage {
     @ColumnDefault("0")
     private int point;
 
-    @Column(name = "profile")
-    @ColumnDefault("https://aliy.store/member/image/default.png")
+    @Column(name = "profile", columnDefinition = "VARCHAR(255) DEFAULT 'https://ailymit.store/member/image/default.png'")
     private String profile;
+
 
     @ColumnDefault("0")
     private int PET;
