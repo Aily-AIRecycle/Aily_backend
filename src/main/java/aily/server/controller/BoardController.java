@@ -122,7 +122,7 @@ public class BoardController {
 //    }
 
     //trash image 전송
-    @GetMapping(value = "/board/image/dict_image/{userid}.png", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/board/image/dict_image/{userid}.png", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<ByteArrayResource> getTrashImage(@PathVariable("userid") String id) throws IOException {
         String imagePath = IMAGE_DIRECTORY + id + ".png";
         Path path = Paths.get(imagePath);
@@ -135,7 +135,8 @@ public class BoardController {
         return ResponseEntity.ok()
                 .cacheControl(cacheControl)
                 .contentLength(imageBytes.length)
-                .contentType(MediaType.IMAGE_JPEG)
+                .contentType(MediaType.valueOf(MediaType.IMAGE_PNG_VALUE))
                 .body(resource);
     }
+
 }
