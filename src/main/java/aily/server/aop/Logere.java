@@ -28,7 +28,6 @@ public class Logere {
 
         long time = watch.getTotalTimeMillis();
         MethodSignature sig = (MethodSignature)  jp.getSignature();
-        Object [] args = jp.getArgs();
         System.out.println(sig.getName() + ", " + time + "ms걸림");
         System.out.println("ip = " + ipAddress);
         return result;

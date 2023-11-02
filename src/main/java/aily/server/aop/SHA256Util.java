@@ -7,10 +7,11 @@ import java.security.MessageDigest;
 @Component("SHA256Util")
 public class SHA256Util {
     public static String encData(String data) throws Exception {// 패스워드 값을 매개변수로 받음
+        String ec = data + "ailyby";
         //MessageDigest 클래스를 이용한 암호화
         MessageDigest mDigest = MessageDigest.getInstance("SHA-256");
         //password 값을 바이트 배열로 바꿔서 mDigest에 넣어줌
-        mDigest.update(data.getBytes());
+        mDigest.update(ec.getBytes());
         //SHA-256으로 변환된 데이터를 byte배열로 꺼냄
         byte[] msgStr = mDigest.digest();
         //1byte 0~255까지 사용가능하지만
@@ -19,7 +20,7 @@ public class SHA256Util {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < msgStr.length; i++) {
             byte tmpStrByte = msgStr[i];
-            String tmpTxt = Integer.toString((tmpStrByte & 0xff) + 0x100, 16).substring(1);
+            String tmpTxt = Integer.toString((tmpStrByte & 0xff) + 0x100, 17).substring(1);
             sb.append(tmpTxt);
         }
         return sb.toString();
