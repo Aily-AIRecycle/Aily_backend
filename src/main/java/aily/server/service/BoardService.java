@@ -5,17 +5,27 @@ import aily.server.entity.redict;
 import aily.server.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.CacheControl;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
+    //사진 경로 위치
+    private static final String IMAGE_DIRECTORY = "/home/ubuntu/category/";
 
-    private Map<String, String> category = new HashMap<String, String>() {{
+    private final Map<String, String> category = new HashMap<String, String>() {{
         put("gen", "1");
         put("can", "2");
         put("pet", "3");
@@ -60,6 +70,24 @@ public class BoardService {
         return BoardDTO.toListBoardDTO(boardRepository.findByCategory(categoryname));
 
     }
+
+    //카테고리 별 사진 불러오기
+    public ResponseEntity<ByteArrayResource> CategoryGetImage(String id) throws IOException {
+    String imagePath = IMAGE_DIRECTORY + id + ".png";
+    Path path = Paths.get(imagePath);
+    byte[] imageBytes = Files.readAllBytes(path);
+
+    ByteArrayResource resource = new ByteArrayResource(imageBytes);
+
+    CacheControl cacheControl = CacheControl.noCache();
+
+        return ResponseEntity.ok()
+                .cacheControl(cacheControl)
+                .contentLength(imageBytes.length)
+                .contentType(MediaType.valueOf(MediaType.IMAGE_PNG_VALUE))
+            .body(resource);
+}
+
 //    //특정게시글삭제
 //    public void boardDelete(Long id){ /*id값 1번을 넣어주면 1번을 삭제한다*/
 //        boardRepository.deleteById(id);

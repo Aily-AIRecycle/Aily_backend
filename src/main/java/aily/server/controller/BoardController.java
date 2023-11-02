@@ -1,29 +1,21 @@
 package aily.server.controller;
 
 import aily.server.DTO.BoardDTO;
-import aily.server.entity.redict;
 import aily.server.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.SimpleTimeZone;
+
 
 @RestController
 @RequiredArgsConstructor
 public class BoardController {
-    private static final String IMAGE_DIRECTORY = "/home/ubuntu/category/";
+    //private static final String IMAGE_DIRECTORY = "/home/ubuntu/category/";
 
 
     private final BoardService boardService;
@@ -124,19 +116,7 @@ public class BoardController {
     //trash image 전송
     @GetMapping(value = "/board/image/dict_image/{userid}.png", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<ByteArrayResource> getTrashImage(@PathVariable("userid") String id) throws IOException {
-        String imagePath = IMAGE_DIRECTORY + id + ".png";
-        Path path = Paths.get(imagePath);
-        byte[] imageBytes = Files.readAllBytes(path);
-
-        ByteArrayResource resource = new ByteArrayResource(imageBytes);
-
-        CacheControl cacheControl = CacheControl.noCache();
-
-        return ResponseEntity.ok()
-                .cacheControl(cacheControl)
-                .contentLength(imageBytes.length)
-                .contentType(MediaType.valueOf(MediaType.IMAGE_PNG_VALUE))
-                .body(resource);
+        return boardService.CategoryGetImage(id);
     }
 
 }

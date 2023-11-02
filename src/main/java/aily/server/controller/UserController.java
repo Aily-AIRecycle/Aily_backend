@@ -61,36 +61,20 @@ public class  UserController {
             response.getWriter().flush();
         }
 
-    //회원 관련 개인 폴더 삭제
-    private static boolean deleteDirectory(File directory) {
-        if (directory.isDirectory()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (!deleteDirectory(file)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return directory.delete();
-    }
 
-    //-----------------------------------------------
+    //----------------------------------------------------------------------------------------------
     //회원가입, 비회원으로 포인트 적립후, 회원가입시 기존 정보 삭제( MyPaeg 정보 옮기고)
     //사용자 폴더,파일 이름 변경
     //비회원일떄 회원가입
     @PostMapping("/member/join")
     public ResponseEntity<String> save1 (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
-
-        if(userService.test(userDTO.getPhonenumber()).equals("NFT")) {
-            userDTO.setProfile("https://ailymit.store/member/image/" + userDTO.getNickname() + "/image.png");
-            User user = User.saveToEntity(userDTO);
+        //if(userService.test(userDTO.getPhonenumber()).equals("NFT")) {
+            User user = User.saveToEntity(UserDTO.FirstJoinUser(userDTO,"https://ailymit.store/member/image/" + userDTO.getNickname() + "/image.png"));
             userService.getImage(userDTO.getNickname());
             System.out.println("회원 아님");
             userService.signUp(user);
-        }
+        //}
         return ResponseEntity.ok("회원가입 완료!");
     }
     //임시회원일떄 회원가입
@@ -98,24 +82,18 @@ public class  UserController {
     public ResponseEntity<String> save2 (@RequestBody UserDTO userDTO) throws IOException {
         //System.out.println("userDTO = " + userDTO.toString() + " " + userDTO.getNickname());
 
-        if(!userService.test(userDTO.getPhonenumber()).equals("NFT")){
-            MyPageDTO upuser;
-            upuser = userService.getupdatemypage(userDTO.getPhonenumber());
-            userDTO.setCAN(upuser.getCAN());
-            userDTO.setGEN(upuser.getGEN());
-            userDTO.setPET(upuser.getPET());
-            userDTO.setPoint(upuser.getPoint());
-            userDTO.setNickname(userDTO.getNickname());
-            userDTO.setProfile("https://ailymit.store/member/image/" + userDTO.getNickname() + ".png");
-            User user = User.saveToEntity(userDTO);
+        //if(!userService.test(userDTO.getPhonenumber()).equals("NFT")){
+            MyPageDTO usermypage = userService.getupdatemypage(userDTO.getPhonenumber());
+            UserDTO joingestDTO = UserDTO.guestuserjoinUserDTO(userDTO,usermypage);
+            User user = User.saveToEntity(joingestDTO);
             System.out.println("회원임");
             userService.delUser(user);
             userService.signUp(user);
-            userService.renameFileFolder(userDTO.getNickname(), upuser.getNickname());
-        }
+            userService.renameFileFolder(userDTO.getNickname(), usermypage.getNickname());
+        //}
         return ResponseEntity.ok("회원가입 완료!");
     }
-    //-----------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     @PostMapping("/member/login")
     public ResponseEntity<UserDTO> loginRe (@RequestBody UserDTO params) {
@@ -171,4 +149,20 @@ public class  UserController {
         return ResponseEntity.ok(result);
     }
 
+    //회원 관련 개인 폴더 삭제
+    private static boolean deleteDirectory(File directory) {
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (!deleteDirectory(file)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return directory.delete();
+    }
+
 }
+

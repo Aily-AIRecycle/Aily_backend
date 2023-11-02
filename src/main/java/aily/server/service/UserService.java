@@ -3,6 +3,8 @@ package aily.server.service;
 import aily.server.DTO.MyPageDTO;
 import aily.server.entity.MyPage;
 import aily.server.repository.MyPageRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
@@ -17,8 +19,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 
 @Service
@@ -26,8 +28,9 @@ import java.util.OptionalInt;
 public class UserService {
     private final UserRepository userRepository;
     private final MyPageRepository myPageRepository;
-    private static final String IMAGE_DIRECTORY = "/home/lee/image/";
-    private static final String sourceFilePath = "/home/lee/image/default/image.png";
+    private static final String IMAGE_DIRECTORY = "/home/ubuntu/image/";
+    private static final String sourceFilePath = "/home/ubuntu/image/default/image.png";
+
 
 
     //유저의 프로필사진 표시
@@ -61,11 +64,6 @@ public class UserService {
         }else {
             return "no";
         }
-    }
-
-    //개인 쓰레기 데이터 조회
-    public String userTotalDonutes(String phonenumber){
-       return myPageRepository.finduserTotalDonut(phonenumber);
     }
 
     //회원 핸드폰 번호를 이용한 닉네임 조회
@@ -250,7 +248,7 @@ public class UserService {
     }
 
     //비회원이 회원가입시 or 회원정보 수정 시 폴더,json파일 이름 변경
-    public void renameFileFolder(String id, String oldid){
+    public void renameFileFolder(String id, String oldid) throws IOException {
         File oldFolder = new File(IMAGE_DIRECTORY + oldid );
         File newFolder = new File(IMAGE_DIRECTORY + id);
 
@@ -258,14 +256,52 @@ public class UserService {
         File newFile = new File(IMAGE_DIRECTORY + id+ "/" + id + ".json");
         System.out.println("전 이름 :: " + oldid);
         System.out.println("후 이름 :: " + id);
-        boolean deleteFile = oldFile.delete();
-        boolean deleteFolder = oldFolder.delete();
         boolean Folderresult = oldFolder.renameTo(newFolder);
-        boolean Fileresult = oldFile.renameTo(newFile);
-        System.out.println("삭제 폴더 : " + deleteFolder);
-        System.out.println("삭제 파일 : " + deleteFile);
-        System.out.println("파일 이름 변경 : " + Fileresult);
-        System.out.println("폴더 이름 변경 : " + Folderresult);
 
+        Path oldFilePath = oldFile.toPath();
+        Path newFilePath = newFile.toPath();
+        Files.copy(oldFilePath, newFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+
+        // 기존 파일 삭제
+        boolean deleteFile = oldFile.delete();
+        boolean deleteFoder = oldFolder.delete();
+        System.out.println("기존 json파일 삭제 :: "+deleteFile);
+        System.out.println("기존 폴더 삭제 :: "+deleteFoder);
     }
+
+    public List<Map<String, Object>> getHistory(UserDTO params){
+        // JSON 파일을 읽어옵니다.
+        String json = IMAGE_DIRECTORY + params.getNickname() + "/" + params.getNickname() + ".json";
+
+        List<Map<String, Object>> content = null;
+        try {
+            byte[] jsonData = Files.readAllBytes(Paths.get(json));
+            ObjectMapper objectMapper = new ObjectMapper();
+            content = objectMapper.readValue(jsonData, new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
+    }
+
+    public List<Map<String, Integer>> UserTotalDonutChat(UserDTO params){
+        List<Map<String, Integer>> dataList = new ArrayList<>();
+        String userData = myPageRepository.finduserTotalDonut(String.valueOf(params.getPhonenumber()));
+        String trashname = "can,gen,pet";
+        String[] splitData = userData.split(",");
+        String[] splitData1 = trashname.split(",");
+
+        Map<String, Integer> dataMap = new HashMap<>();
+        for (int i = 0; i < splitData.length && i < splitData1.length; i++) {
+            int value = Integer.parseInt(splitData[i]);
+            String key = splitData1[i];
+            dataMap.put(key, value);
+        }
+
+        dataList.add(dataMap);
+        return dataList;
+    }
+
 }

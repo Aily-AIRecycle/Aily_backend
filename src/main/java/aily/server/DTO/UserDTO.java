@@ -29,4 +29,39 @@ public class UserDTO extends MyPageDTO {
         userDTO.setGEN(user.getMyPage().getGEN());
         return userDTO;
     }
+
+    public static UserDTO pointToUserDTO(UserDTO userDTO, int NotUserNumber){
+        UserDTO pointUserDTO = new UserDTO();
+        pointUserDTO.setPhonenumber(userDTO.getPhonenumber());
+        pointUserDTO.setPassword(userDTO.getPhonenumber());
+        pointUserDTO.setNickname("NotUser" + NotUserNumber);
+        pointUserDTO.setProfile("https://ailymit.store/member/image/" + pointUserDTO.getNickname() + ".png");
+        pointUserDTO.setPET(userDTO.getPET());
+        pointUserDTO.setCAN(userDTO.getCAN());
+        pointUserDTO.setGEN(userDTO.getGEN());
+
+        return pointUserDTO;
+    }
+
+    public static UserDTO guestuserjoinUserDTO(UserDTO gestuserDTO, MyPageDTO gestuserMyPage){
+        UserDTO newuserDTO = new UserDTO();
+        newuserDTO.setPhonenumber(gestuserDTO.getPhonenumber());
+        newuserDTO.setPassword(gestuserDTO.getPassword());
+        newuserDTO.setBirth(gestuserDTO.getBirth());
+        newuserDTO.setGender(gestuserDTO.getGender());
+        newuserDTO.setEmail(gestuserDTO.getEmail());
+        newuserDTO.setNickname(gestuserDTO.getNickname());
+        newuserDTO.setProfile(gestuserDTO.getProfile());
+        newuserDTO.setPoint(gestuserMyPage.getPoint());
+        newuserDTO.setCAN(gestuserMyPage.getCAN());
+        newuserDTO.setPET(gestuserMyPage.getPET());
+        newuserDTO.setGEN(gestuserMyPage.getGEN());
+        return newuserDTO;
+
+    }
+
+    public static UserDTO FirstJoinUser(UserDTO userDTO,String profileimageurl){
+        userDTO.setProfile(profileimageurl);
+        return userDTO;
+    }
 }
