@@ -23,12 +23,12 @@ public class PointController {
     public ResponseEntity<List<Map<String, Object>>> savePoint(@RequestBody UserDTO userDTO) throws IOException {
         String name;
         System.out.println("point" + userService.test(userDTO.getPhonenumber()));
-        if(!userService.test(userDTO.getPhonenumber()).equals("NFT")) {
+        if (!userService.test(userDTO.getPhonenumber()).equals("NFT")) {
             System.out.println("userName : " + userService.userPhonenumberbyNickname(userDTO.getPhonenumber()));
             pointService.savepoint(User.saveToEntity(userDTO));
             name = userService.userPhonenumberbyNickname(userDTO.getPhonenumber());
             System.out.println("userOK");
-        }else{
+        } else {
             number = number + 1;
             UserDTO newuserDTO = UserDTO.pointToUserDTO(userDTO, number);
             userService.getImage(newuserDTO.getNickname());
@@ -37,7 +37,6 @@ public class PointController {
             name = newuserDTO.getNickname();
             System.out.println("userNO");
         }
-        return ResponseEntity.ok().body(pointService.writeuserjson(name,userDTO));
+        return ResponseEntity.ok().body(pointService.writeuserjson(name, userDTO));
     }
-
 }
